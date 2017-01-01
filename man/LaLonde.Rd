@@ -1,0 +1,27 @@
+\name{LaLonde}
+\docType{data}
+\alias{LaLonde}
+\title{National Supported Work Study Experimental Data}
+\description{This data set gives the outcomes a well as treatment assignments and covariates for the National Supported Work Study, as analyzed in LaLonde (1986).}
+\usage{data}
+\format{A data frame consisting of 12 columns (including a treatment assignment vector) and 2787 observations.
+	
+        \tabular{llll}{
+	  outcome \tab integer \tab whether earnings in 1978 are larger than in 1975 \tab 0,1 \cr
+	  treat \tab integer \tab whether the individual received the treatment \tab 0,1 \cr
+	  age \tab numeric \tab age in years \tab  \cr
+	  educ \tab numeric \tab education in years \tab  \cr
+	  black \tab factor \tab black or not \tab 0,1 \cr 
+	  hisp \tab factor \tab hispanic or not \tab 0,1 \cr 
+	  white \tab factor \tab white or not \tab 0,1 \cr 
+	  marr \tab factor \tab married or not  \tab 0,1 \cr
+	  nodegr \tab factor \tab  an indicator for no high school degree \tab 0,1 \cr 
+	  log.re75 \tab numeric \tab log of earnings in 1975 \tab \cr 
+	  u75 \tab factor \tab unemployed in 1975 \tab 0,1 \cr 
+	  wts.extrap \tab numeric \tab extrapolation weights to the 1978 Panel Study for Income Dynamics dataset \tab 
+	}
+
+}
+\source{Data from the National Supported Work Study.  A benchmark matching dataset. 1975 earnings are pre-treatment.}
+\references{LaLonde, R.J. 1986. ``Evaluating the econometric evaulations of training programs with experimental data."" American Economic Review, Vol.76, No.4, pp. 604-620.}
+\keyword{datasets}
