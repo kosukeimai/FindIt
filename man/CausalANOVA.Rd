@@ -7,56 +7,132 @@
   \code{CausalANOVA} estimates coefficients of the specified ANOVA with regularization. By taking differences in coefficients, the function recovers the AMEs and AMIEs. 
 }
 \usage{	
-CausalANOVA(formula,data,cost,pair.id=NULL,nway=2,diff=TRUE,
-	    select.prob=FALSE,boot=100,block.id=NULL,seed=1234,
-	    eps=1e-5,fac.level=NULL,ord.fac=NULL,verbose=TRUE)
+CausalANOVA(formula, int2.formula=NULL, int3.formula=NULL,
+            data, nway=1,pair.id=NULL, diff=FALSE,
+	    screen=FALSE, screen.type="fixed", screen.num.int=3,
+	    collapse=FALSE, collapse.type="fixed", collapse.cost=0.3,
+	    family="binomial", cluster=NULL,
+	    maxIter=50, eps=1e-5,
+	    fac.level=NULL, ord.fac=NULL,
+	    select.prob=FALSE, boot=100, seed=1234,verbose=TRUE)
 }
 \arguments{
-  \item{formula}{a formula that specifies outcome and treatment variables.}	
-  \item{data}{an optional data frame, list or environment (or object
+  \item{formula}{A formula that specifies outcome and treatment variables.}
+  \item{int2.formula}{(optional). A formula that specifies two-way interactions.}
+  \item{int3.formula}{(optional). A formula that specifies three-way interactions.}
+  \item{data}{An optional data frame, list or environment (or object
               coercible by 'as.data.frame' to a data frame) containing the
               variables in the model.  If not found in 'data', the
               variables are taken from 'environment(formula)', typically
               the environment from which 'CausalANOVA' is called.}
-  \item{cost}{a cost parameter ranging from 0 to 1. 1 corresponds to no regularization. It is recommended to choose the value using cross validation with \code{cv.GashANOVA}.}
-  \item{pair.id}{unique identifiers for each pair of comparison. This option is used when \code{dif=TRUE}.}
-  \item{nway}{"2" when the two way causal interactions are of interest and "3" when the three-way and two-way causal interactions are of interest. Default is 2.}
-  \item{diff}{a logical indicating whether the outcome is the choice between a pair. If \code{diff=TRUE}, \code{pair.id} should specify a pair of comparison.}
-  \item{select.prob}{a logical indicating whether selection probabilities are computed. We recommend to use this option when the model is finalized.}
-  \item{boot}{the number of bootstrap replicates.}
-  \item{block.id}{unique identifies for blocks that the function uses for block bootstrap.}
-  \item{seed}{seed for bootstrap.}
-  \item{eps}{a tolerance parameter in the internal optimization algorithm.}
-  \item{fac.level}{optional. A vector containing the number of levels in each factor. The order of \code{fac.level} should match to the order of columns in the data. For example, when the first and second columns of the design matrix is "Education" and "Race", the first and second element of \code{fac.level} should be the number of levels in "Education" and "Race", respectively.}
-  \item{ord.fac}{optional. logical vectors indicating whether each factor has ordered (\code{TRUE}) or unordered (\code{FALSE}) levels. When levels are ordered, the function uses the order given by function \code{levels()}. If levels are ordered, the function places penalties on the differences between adjacent levels. If levels are unordered, the function places penalties on the differences based on every pairwise comparison.}
-  \item{verbose}{whether it prints the value of a cost parameter used.}
+  \item{nway}{With \code{nway=1}, the function estimates the Average Marginal Effects (AMEs) only. With \code{nway=2},
+  the function estimates the AMEs and the two-way Average Marginal Interaction Effects (AMIEs). With \code{nway=3},
+  the function estiamtes the AMEs, the two-way and three-way AMIEs. Default is 1.}
+  \item{diff}{A logical indicating whether the outcome is the choice between a pair.
+  If \code{diff=TRUE}, \code{pair.id} should specify a pair of comparison. Default is \code{FALSE}.}
+  \item{pair.id}{(optional).Unique identifiers for each pair of comparison. This option is used when \code{diff=TRUE}.}
+  \item{screen}{A logical indicating whether select significant factor interactions with \code{glinternet}.
+  When users specify interactions using \code{int2.formula} or \code{int3.formula}, this option is ignored.
+  \code{screen} should be used only when users want data-driven selection of factor-interactions. With \code{screen.type},
+  users can specify how to screen factor interactions. We recommend to use this option when the number of factors is large,
+  e.g., more than 6. Default is \code{FALSE}.}
+  \item{screen.type}{Type for screening factor interactions. (1) \code{"fixed"} select the fixed number (specified by
+  \code{screen.num.int}) of factor interactions. (2) \code{"cv.min"} selects factor-interactions with the tuning parameter
+  giving the minimum cross-validation error. (3) \code{"cv.1Std"} selects factor-interactions with the tuning parameter
+  giving a cross-validation error that is within 1 standard deviation of the minimum cv error.}
+  \item{screen.num.int}{(optional).The number of factor interactions to select. This option is used when and
+  \code{screen=TRUE} and \code{screen.type="fixed"}. Default is 3.}  
+  \item{collapse}{A logical indicating whether to collapse insignificant levels within factors.
+  With \code{collapse.type},
+  users can specify how to collapse levels within factors. We recommend to use this option when the number of levels is large,
+  e.g., more than 6. Default is \code{FALSE}.}
+  \item{collapse.type}{Type for collapsing levels within factors. (1) \code{"fixed"} collapses levels with the fixed cost parameter
+  (specified by \code{collapse.cost}). (2) \code{"cv.min"} collapses levels with the cost paramter giving the minimum cross-validation
+  error. This option might take time. (3) \code{"cv.1Std"} collapses with the cost parameter
+  giving a cross-validation error that is within 1 standard deviation of the minimum cv error. This option might take time.}
+  \item{collapse.cost}{(optional).A cost parameter ranging from 0 to 1. 1 corresponds to no collapsing. The closer to 0, the stronger regularization. Default is 0.3.}
+  \item{family}{A family of outcome varialbes. \code{"gaussian"} when continuous outcomes \code{"binomial"} when binary outcomes.
+  Default is \code{"binomial"}.}
+  \item{cluster}{Unique identifies with which cluster standard errors are computed.}
+  \item{maxIter}{The number of maximum iteration for \code{glinternet}.}
+  \item{eps}{A tolerance parameter in the internal optimization algorithm.}
+  \item{fac.level}{(optional). A vector containing the number of levels in each factor. The order of \code{fac.level} should
+  match to the order of columns in the data. For example, when the first and second columns of the design matrix is
+  "Education" and "Race", the first and second element of \code{fac.level} should be the number of levels in "Education" and "Race", respectively.}
+  \item{ord.fac}{(optional). Logical vectors indicating whether each factor has ordered (\code{TRUE}) or unordered (\code{FALSE}) levels.
+  When levels are ordered, the function uses the order given by function \code{levels()}. If levels are ordered,
+  the function places penalties on the differences between adjacent levels.
+  If levels are unordered, the function places penalties on the differences based on every pairwise comparison.}
+  \item{select.prob}{(optional). A logical indicating whether selection probabilities are computed. This option might take time.}
+  \item{boot}{The number of bootstrap replicates for \code{select.prob}. Default is 50.}
+  \item{seed}{Seed for bootstrap.}
+  \item{verbose}{Whether it prints the value of a cost parameter used.}
 }
 
-\details{Suggested workflow.
+\details{Regularization: \code{screen} and \code{collapse}.
+
+Users can implement regularization in order to reduces false discovery rate and facilitates interpretation. This is particularly useful when analyzing
+factorial experiments with a large number of factors, each having many levels. 
+\itemize{
+\item{When \code{screen=TRUE}, the function selects significant factor interactions with \code{glinternet} (Lim and Hastie 2015)
+before estimating the AMEs and AMIEs. This option is recommended when there are many factors, e.g., more than 6 factors.
+Alternatively, users can pre-specify interactions of interest
+using \code{int2.formula} and \code{int3.formula}.}
+\item{When \code{collapse=TRUE}, the function collapses insignificant levels within each factor by GashANOVA (Post and Bondell 2013)
+before estimating the AMEs and AMIEs. This option is recommended when there are many levels within some factors, e.g., more than 6 levels.}
+}
+
+Inference after Regularization:
+\itemize{
+\item{When \code{screen=TRUE} or \code{collapse=TRUE}, in order to make valid inference after regularization, we recommend to use
+\code{test.CausalANOVA} function. It takes the output from \code{CausalANOVA} function and estimate the AMEs and AMIEs with \code{newdata} and provide
+confidence intervals. Ideally, users should split samples into two; use a half for regularization with \code{CausalANOVA} function and use the other
+half for inference with \code{test.CausalANOVA}.}
+\item{If users do not need regularization, specify \code{screen=FALSE} and \code{collapse=FALSE}. The function estiamtes the AMEs and AMIEs and compute confidence intervals
+with the full sample.}
+}
+
+Suggested Workflow: (See Examples below as well)
+\enumerate{ 
+\item{Specify the order of levels within each factor using \code{levels()}.}{   When \code{collapse=TRUE}, the function places penalties on the differences between adjacent levels when levels are ordered, it is crucial to specify the order of levels within each factor carefully.}
+\item{Run \code{CausalANOVA}.}{
 \enumerate{
-\item{Specify the order of levels within each factor using \code{levels()}.}{   Since the function places penalties on the differences between adjacent levels when levels are ordered, it is crucial to specify the order of levels within each factor carefully.}
-\item{Run \code{cv.CausalANOVA}.}{   Select the cost parameter minimizing the cross-validation error. Or choose largest value of \code{cost} such that error is within 1 standard error of the minimum. \code{plot.cv.CausalANOVA} can be used to investigate how cross-validation errors vary depending on cost parameters.}
-\item{Run \code{CausalANOVA}.}{   Run the main model with the chosen cost parameter and see summary by \code{summary.CausalANOVA}. If researchers want to compute selection probabilities, set \code{select.prob=TRUE}. Given it is computationally intensive, we recommend to compute selection probabilities when the model is finalized. The selection probability for the range of the AME (AMIE) is one minus the proportion of bootstrap replicates in which all coefficients for the corresponding factor (factor interaction) are estimated to be zero. The selection probability of the AME (AMIE) is the proportion of bootstrap replicates in which the sign of the effect is the same as the point estimate.}
-\item{Investigate two-way interactions.}{   Run \code{plot.CausalANOVA} and visualize the AMIEs by choosing two factors of interest. Run \code{AMIE} to examine decomposition of the average combination effect into the AMIE and AMEs.}
+\item{Specify \code{formula} to indicate outcomes and treatment variables and \code{nway} to indicate the order of interactions.}
+\item{Specify \code{diff=TRUE} and \code{pair.id} if the outcome is the choice between a pair.}
+\item{Specify \code{screen}. \code{screen=TRUE} to implement data-driven selection of factor interactions. \code{screen=FALSE} to specify
+interactions through \code{int2.formula} and \code{int3.formula} by hand.}
+\item{Specify \code{collapse}. \code{collapse=TRUE} to implement data-driven collapsing of insignificant levels. \code{collapse=FALSE} to use
+the original nubmber of levels.}}
+}
+\item{Run \code{test.CausalANOVA} when \code{select=TRUE} or \code{collapse=TRUE}.}		
+\item{Run \code{summary} and \code{plot} to explore the AMEs and AMIEs.}
+\item{Estimate conditional effects using \code{ConditionalEffect} function and visualize them using \code{plot} function.}
 }
 }
+
 \value{
-  \item{intercept}{an intercept of the estimated ANOVA model.If \code{diff=TRUE}, this should be close to 0.5.}
-  \item{coefs}{a named vector of coefficients of the estimated ANOVA model.}
-  \item{formula}{the \code{formula} used in the function.}
-  \item{cost}{the cost parameter used in the function.}
+  \item{intercept}{An intercept of the estimated ANOVA model.If \code{diff=TRUE}, this should be close to 0.5.}
+  \item{formula}{The \code{formula} used in the function.}
+  \item{coefs}{A named vector of coefficients of the estimated ANOVA model.}
+  \item{vcov}{The variance-covariance matrix for \code{coefs}. Only when \code{select=FALSE} and \code{collapse=FALSE}.}
+  \item{CI.table}{The summary of AMEs and AMIEs with confidence intervals. Only when \code{select=FALSE} and \code{collapse=FALSE}.}
+  \item{AME}{The estimated AMEs with the grand-mean as baselines.}
+  \item{AMIE2}{The estimated two-way AMIEs with the grand-mean as baselines.}
+  \item{AMIE3}{The estimated three-way AMIEs with the grand-mean as baselines.}
   \item{...}{arguments passed to the function or arguments only for the internal use.}	
 }
 \references{
-Post, J. B. and Bondell, H. D. 2013. ``Factor selection and structural identification
-in the interaction anova model.'' Biometrics 69, 1, 70--79.
+Egami, Naoki and Kosuke Imai. 2016+. Causal Interaction in Factorial Experiments: Application to Conjoint Analysis. Working paper. \url{http://imai.princeton.edu/research/files/int.pdf}
 
-Egami, Naoki and Kosuke Imai. 2016+. ``Causal Interaction in Factorial Experiments: Application to Conjoint Analysis.'' Working paper. \url{http://imai.princeton.edu/research/files/int.pdf}
+Lim, M. and Hastie, T. 2015. Learning interactions via hierarchical group-lasso regularization. Journal of Computational and Graphical Statistics 24, 3, 627--654.
+
+Post, J. B. and Bondell, H. D. 2013. Factor selection and structural identification
+in the interaction anova model. Biometrics 69, 1, 70--79.
 }
 
 \author{Naoki Egami and Kosuke Imai.}
 
-\seealso{\link{cv.CausalANOVA},\link{AMIE}}
+\seealso{\link{cv.CausalANOVA}}
 
 \examples{
 data(Carlson)
@@ -68,40 +144,92 @@ Carlson$promise <- factor(Carlson$promise,ordered=TRUE,levels=c("jobs","clinic",
 Carlson$coeth_voting <- factor(Carlson$coeth_voting,ordered=FALSE,levels=c("0","1"))
 Carlson$relevantdegree <- factor(Carlson$relevantdegree,ordered=FALSE,levels=c("0","1"))
 
-## Run cv.CausalANOVA
-\dontrun{
-cv.fit <- cv.CausalANOVA(won ~ newRecordF + promise + coeth_voting + relevantdegree,
-                         data=Carlson,
-                         pair.id=Carlson$contestresp,diff=TRUE, nway=2)
+## ####################################### 
+## Without Screening and Collapsing
+## ####################################### 
+## only AMEs 
+fit1 <- CausalANOVA(formula=won ~ newRecordF + promise + coeth_voting + relevantdegree,
+                    data=Carlson, pair.id=Carlson$contestresp, diff=TRUE,
+		    cluster=Carlson$respcodeS, nway=1)
+summary(fit1)
+# plot(fit1)
 
-cv.fit
-plot(cv.fit)
-}
-
-fit <- CausalANOVA(won ~ newRecordF + promise + coeth_voting + relevantdegree,
-                    data=Carlson,
-                    pair.id=Carlson$contestresp,diff=TRUE, nway=2,cost=0.15)
-## Or when we need selection probabilities.
-\dontrun{
-fit <- CausalANOVA(won ~ newRecordF + promise + coeth_voting + relevantdegree,
-                    data=Carlson,
-                    pair.id=Carlson$contestresp,diff=TRUE,nway=2,cost=0.15,
-                    select.prob=TRUE,boot=500,block.id=Carlson$respcodeS)
-}
-summary(fit)
+## AMEs and two-way AMIEs 
+fit2 <- CausalANOVA(formula=won ~ newRecordF + promise + coeth_voting + relevantdegree,
+                    int2.formula = ~ newRecordF:coeth_voting,
+		    data=Carlson, pair.id=Carlson$contestresp,diff=TRUE,
+		    cluster=Carlson$respcodeS, nway=2)
+summary(fit2)
+plot(fit2)
+plot(fit2, type="ConditionalEffect", fac.name=c("newRecordF","coeth_voting"))
+ConditionalEffect(fit2, treat.fac="newRecordF", cond.fac="coeth_voting")
 
 \dontrun{
-## plot 
-plot(fit,fac.name=c("newRecordF","coeth_voting"))
+## AMEs and two-way and three-way AMIEs
+## Note: All pairs within thee-way interactions should show up in int2.formula (Strong Hierarchy).
+fit3 <- CausalANOVA(formula=won ~ newRecordF + promise + coeth_voting + relevantdegree,
+                    int2.formula = ~ newRecordF:promise + newRecordF:coeth_voting
+		                         + promise:coeth_voting,
+		    int3.formula = ~ newRecordF:promise:coeth_voting,
+		    data=Carlson, pair.id=Carlson$contestresp,diff=TRUE,
+		    cluster=Carlson$respcodeS, nway=3)
+summary(fit3)
+plot(fit3)
+plot(fit3, type="AMIE", fac.name=c("newRecordF","promise", "coeth_voting"),space=25,adj.p=2.2)
+ConditionalEffect(fit3, treat.fac="newRecordF", cond.fac="coeth_voting")
 }
 
-## compute AMIEs
-amie1 <- AMIE(fit,fac.name=c("promise","newRecordF"),
-              level.name=c("jobs","noLC"),
-              base.name=c("jobs","YesLC"))
+## ####################################### 
+## With Screening and Collapsing
+## #######################################
+## Sample Splitting
+train.ind <- sample(unique(Carlson$respcodeS), 272, replace=FALSE)
+test.ind <- setdiff(unique(Carlson$respcodeS), train.ind)
+Carlson.train <- Carlson[is.element(Carlson$respcodeS,train.ind), ]
+Carlson.test <- Carlson[is.element(Carlson$respcodeS,test.ind), ]
 
-amie2 <- AMIE(fit,fac.name=c("newRecordF","coeth_voting"),
-              level.name=c("noBus","1"),
-              base.name=c("noMP","0"))
+## only AMEs (Note: when nway=1, there is no factor interaction, so screen=FALSE).
+fit.r1 <- CausalANOVA(formula=won ~ newRecordF + promise + coeth_voting + relevantdegree,
+                      data=Carlson.train, pair.id=Carlson.train$contestresp, diff=TRUE,
+		      collapse=TRUE,
+		      cluster=Carlson.train$respcodeS, nway=1)
+summary(fit.r1)
 
+## refit with test.CausalANOVA
+fit.r1.new <- test.CausalANOVA(fit.r1, newdata=Carlson.test, diff=TRUE,
+                               pair.id=Carlson.test$contestresp, cluster=Carlson.test$respcodeS)
+summary(fit.r1.new)
+plot(fit.r1.new)
+
+## AMEs and two-way AMIEs 
+fit.r2 <- CausalANOVA(formula=won ~ newRecordF + promise + coeth_voting + relevantdegree,
+                      data=Carlson.train, pair.id=Carlson.train$contestresp,diff=TRUE,
+		      screen=TRUE, collapse=TRUE,
+		      cluster=Carlson.train$respcodeS, nway=2)
+summary(fit.r2)
+
+## refit with test.CausalANOVA
+fit.r2.new <- test.CausalANOVA(fit.r2, newdata=Carlson.test, diff=TRUE,
+                               pair.id=Carlson.test$contestresp, cluster=Carlson.test$respcodeS)
+
+summary(fit.r2.new)
+plot(fit.r2.new)
+plot(fit.r2.new, type="ConditionalEffect", fac.name=c("newRecordF","coeth_voting"))
+ConditionalEffect(fit.r2.new, treat.fac="newRecordF", cond.fac="coeth_voting")
+
+\dontrun{
+## AMEs and two-way and three-way AMIEs
+fit.r3 <- CausalANOVA(formula=won ~ newRecordF + promise + coeth_voting + relevantdegree,
+                      data=Carlson, pair.id=Carlson$contestresp,diff=TRUE,
+		      screen=TRUE, collapse=TRUE,
+		      cluster=Carlson$respcodeS, nway=3)
+summary(fit.r3)
+
+## refit with test.CausalANOVA
+fit.r3.new <- test.CausalANOVA(fit.r3, newdata=Carlson.test, diff=TRUE,
+                               pair.id=Carlson.test$contestresp, cluster=Carlson.test$respcodeS)
+
+summary(fit.r3.new)
+ConditionalEffect(fit.r3.new, treat.fac="newRecordF", cond.fac="coeth_voting")
+}
 }
