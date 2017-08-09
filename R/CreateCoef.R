@@ -3,7 +3,7 @@
 ## 2016/09/03
 ########################################
 
-CreateCoef <- function(coef.use, Index.use, Fac.level.use){
+CreateCoef <- function(coef.use, Index.use, Fac.level.use, Gorder){
 
     OneANOVA <- function(Ovec){
         OvecF<- c(Ovec,-sum(Ovec))
@@ -39,7 +39,6 @@ CreateCoef <- function(coef.use, Index.use, Fac.level.use){
     Two.coef <- list()
     Three.coef <- list()
     one <- two <- three <- 0
-    Gorder <- 2
     for(z in 1:nrow(Index.use)){
         if(Index.use$order[z]==1){
             one <- one + 1
@@ -54,7 +53,6 @@ CreateCoef <- function(coef.use, Index.use, Fac.level.use){
             Two.coef[[two]] <- TwoANOVA(Tmatrix=two.mat)
         }
         if(Index.use$order[z]==3){
-            Gorder <- 3
             three <- three + 1
             three.level <- Fac.level.use[z,][Fac.level.use[z,]!=0]
             three.array <- array(coef.use[Index.use$start[z]:Index.use$end[z]],
@@ -62,12 +60,18 @@ CreateCoef <- function(coef.use, Index.use, Fac.level.use){
             Three.coef[[three]] <- ThreeANOVA(three.array,three.level)
         }
     }
-
-    full <- append(One.coef, Two.coef)
-    if(Gorder==3){
+    if(Gorder ==1){
+        full <- One.coef
+    }else if(Gorder==2){
+        full <- append(One.coef, Two.coef)
+    }else if(Gorder==3){
+        full <- append(One.coef, Two.coef)
         full <- append(full, Three.coef)
     }
-    output <- list("One.coef"=One.coef,"Two.coef"=Two.coef,"Three.coef"=Three.coef, "Full"=full)
+    output <- list("One.coef"=One.coef,
+                   "Two.coef"=Two.coef,
+                   "Three.coef"=Three.coef,
+                   "full"=full)
     return(output)
 
 }

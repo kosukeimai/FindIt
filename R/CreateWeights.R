@@ -3,7 +3,8 @@
 ## 2016/08/22
 ##################################################
 
-CreateWeights <- function(formula, Gorder=3,dif=TRUE,facCons=FALSE,data,side,type.ind,fac.level,ord.fac){
+CreateWeights <- function(formula,Gorder=3,dif=TRUE,facCons=FALSE,data,side,type.ind,fac.level,ord.fac,
+                          indTwo=NULL, indThree=NULL){
 
     ## Make the difference in three-way interactions
     D3function <- function(alevel,blevel,clevel,type="A",ordABC=c(FALSE,FALSE,FALSE)){
@@ -213,7 +214,8 @@ CreateWeights <- function(formula, Gorder=3,dif=TRUE,facCons=FALSE,data,side,typ
     lm.fit <- lm(y ~ X)
     coef.use <- coef(lm.fit)[-1]
     
-    levelIndex <- CreatelevelIndex(fac.level=(fac.level-1),ord.fac=ord.fac, Gorder=Gorder)
+    levelIndex <- CreatelevelIndex(fac.level=(fac.level-1),ord.fac=ord.fac,Gorder=Gorder,
+                                   indTwo=indTwo, indThree=indThree)
     use.ind <-  (levelIndex$plus==1)*(levelIndex$dif==0)
     Index.use <- levelIndex[use.ind==1,]
     Fac.index <- levelIndex[,regexpr("Fac",colnames(levelIndex))>0]
@@ -226,15 +228,17 @@ CreateWeights <- function(formula, Gorder=3,dif=TRUE,facCons=FALSE,data,side,typ
     if(Gorder==2){
         Index.use$seq.order <- c(seq(1:sum(Index.use$order==1)),
                                  seq(1:sum(Index.use$order==2)))
-    }else if(Gorder>2){
+    }else if(Gorder==3){
         Index.use$seq.order <- c(seq(1:sum(Index.use$order==1)),
                                  seq(1:sum(Index.use$order==2)),
                                  seq(1:sum(Index.use$order==3)))
     }
-    
+
+    ## Need to change?
     Coef.list <- CreateCoef(coef.use=coef.use, 
                             Index.use=Index.use,
-                            Fac.level.use=Fac.level.useC)
+                            Fac.level.use=Fac.level.useC,
+                            Gorder=Gorder)
 
     if(facCons==TRUE){
         n.fac <- length(fac.level)
@@ -307,62 +311,74 @@ CreateWeights <- function(formula, Gorder=3,dif=TRUE,facCons=FALSE,data,side,typ
         qp <- ncol(MainDif)
         
         ## Two-ways
-        ind.use.Two <- (Index.use$order==2)*(Fac.Ind.use[type.ind]==1)
-        Index.useTwo <- Index.use[ind.use.Two==1,]
-        Fac.useTwo <- Fac.Ind.use[ind.use.Two==1,]
-        Fac.level.useTwo <- Fac.level.use[ind.use.Two==1,]
-        IntDif <- matrix(0,nrow=0,ncol=qp)
-        for(z in 1:nrow(Index.useTwo)){
-            level.use <- as.numeric(Fac.level.useTwo[z,Fac.useTwo[z, ]==1])
-            ord.use <- ord.fac[Fac.useTwo[z, ]==1]
-            if(min(which(Fac.useTwo[z,]==1))==type.ind){
-                type.d2 <- "A"}else{ type.d2 <- "B" }
-            D2  <- D2function(alevel=level.use[1],blevel=level.use[2],
-                              type=type.d2,ordAB=ord.use)
-            coef.int <- c(Coef.list$Two.coef[[Index.useTwo[z,"seq.order"]]])
-            IntDif.t <- D2 %*% coef.int
-            IntDif.mat <- matrix(IntDif.t,ncol=qp)
-            IntDif <- rbind(IntDif, IntDif.mat)
-        }
-
-        if(Gorder>2){
-            ## Three-ways   
-            ind.use.Three <- (Index.use$order==3)*(Fac.Ind.use[type.ind]==1)
-            Index.useThree <- Index.use[ind.use.Three==1,]
-            Fac.useThree <- Fac.Ind.use[ind.use.Three==1,]
-            Fac.level.useThree <- Fac.level.use[ind.use.Three==1,]
-            ThreeDif <- matrix(0,nrow=0,ncol=qp)
-            
-            for(z in 1:nrow(Index.useThree)){
-                level.use <- as.numeric(Fac.level.useThree[z,Fac.useThree[z, ]==1])
-                ord.use <- ord.fac[Fac.useThree[z, ]==1]
-                if(min(which(Fac.useThree[z,]==1))==type.ind){
-                    type.d3 <- "A"
-                }else if (max(which(Fac.useThree[z,]==1))==type.ind){
-                    type.d3 <- "C"
-                }else{ type.d3 <- "B"}
-                D3  <- D3function(alevel=level.use[1],blevel=level.use[2],clevel=level.use[3],
-                                  type=type.d3,ordABC=ord.use)
-                coef.three <- c(Coef.list$Three.coef[[Index.useThree[z,"seq.order"]]])
-                ThreeDif.t <- D3 %*% coef.three
-                ThreeDif.mat <- matrix(ThreeDif.t,ncol=qp)
-                ThreeDif <- rbind(ThreeDif, ThreeDif.mat)
+        onlyOne <- sum(Fac.Ind.use[type.ind])==1
+        yesTwo <- sum((Index.use$order==2)*(Fac.Ind.use[type.ind]==1))>0
+        yesThree <- sum((Index.use$order==3)*(Fac.Ind.use[type.ind]==1))>0
+        if(onlyOne==TRUE){
+            ## No Interaction
+            Dif <- abs(MainDif)
+            ## print(Dif)
+        }else if(yesTwo==TRUE){
+            ind.use.Two <- (Index.use$order==2)*(Fac.Ind.use[type.ind]==1)
+            Index.useTwo <- Index.use[ind.use.Two==1,]
+            Fac.useTwo <- Fac.Ind.use[ind.use.Two==1,]
+            Fac.level.useTwo <- Fac.level.use[ind.use.Two==1,]
+            IntDif <- matrix(0,nrow=0,ncol=qp)
+            for(z in 1:nrow(Index.useTwo)){
+                level.use <- as.numeric(Fac.level.useTwo[z,Fac.useTwo[z, ]==1])
+                ord.use <- ord.fac[Fac.useTwo[z, ]==1]
+                if(min(which(Fac.useTwo[z,]==1))==type.ind){
+                    type.d2 <- "A"}else{ type.d2 <- "B" }
+                D2  <- D2function(alevel=level.use[1],blevel=level.use[2],
+                                  type=type.d2,ordAB=ord.use)
+                coef.int <- c(Coef.list$Two.coef[[Index.useTwo[z,"seq.order"]]])
+                IntDif.t <- D2 %*% coef.int
+                IntDif.mat <- matrix(IntDif.t,ncol=qp)
+                IntDif <- rbind(IntDif, IntDif.mat)
+            }
+            if(yesThree==FALSE){                
+                Dif <- abs(rbind(MainDif,IntDif))
+            }else if(yesThree==TRUE){
+                ## Three-ways   
+                ind.use.Three <- (Index.use$order==3)*(Fac.Ind.use[type.ind]==1)
+                Index.useThree <- Index.use[ind.use.Three==1,]
+                Fac.useThree <- Fac.Ind.use[ind.use.Three==1,]
+                Fac.level.useThree <- Fac.level.use[ind.use.Three==1,]
+                ThreeDif <- matrix(0,nrow=0,ncol=qp)
+                
+                for(z in 1:nrow(Index.useThree)){
+                    level.use <- as.numeric(Fac.level.useThree[z,Fac.useThree[z, ]==1])
+                    ord.use <- ord.fac[Fac.useThree[z, ]==1]
+                    if(min(which(Fac.useThree[z,]==1))==type.ind){
+                        type.d3 <- "A"
+                    }else if (max(which(Fac.useThree[z,]==1))==type.ind){
+                        type.d3 <- "C"
+                    }else{ type.d3 <- "B"}
+                    D3  <- D3function(alevel=level.use[1],blevel=level.use[2],clevel=level.use[3],
+                                      type=type.d3,ordABC=ord.use)
+                    coef.three <- c(Coef.list$Three.coef[[Index.useThree[z,"seq.order"]]])
+                    ThreeDif.t <- D3 %*% coef.three
+                    ThreeDif.mat <- matrix(ThreeDif.t,ncol=qp)
+                    ThreeDif <- rbind(ThreeDif, ThreeDif.mat)
+                }            
+                Dif <- abs(rbind(MainDif,IntDif,ThreeDif))
             }
         }
-
-        if(Gorder == 2){
-            Dif <- abs(rbind(MainDif,IntDif))
-        }else if(Gorder > 2){
-            Dif <- abs(rbind(MainDif,IntDif,ThreeDif))
-        }
-        weight <- apply(Dif,2,function(x) 1/max(x))
+        
+        ## if(Gorder == 2){
+        ##     Dif <- abs(rbind(MainDif,IntDif))
+        ## }else if(Gorder > 2){
+        ##     Dif <- abs(rbind(MainDif,IntDif,ThreeDif))
+        ## }
+        weight <- apply(Dif,2,function(x) 1/max(abs(x)))
     }
 
-    levelIndex <- CreatelevelIndex(fac.level=(fac.level),ord.fac=ord.fac, Gorder=Gorder)
+    levelIndex <- CreatelevelIndex(fac.level=(fac.level),ord.fac=ord.fac, Gorder=Gorder,
+                                   indTwo=indTwo, indThree=indThree)
     use.ind <-  (levelIndex$plus==1)*(levelIndex$dif==1) * (levelIndex$order==1)
     Index.use <- levelIndex[use.ind==1,]
     temp.w <- 1/(sqrt(fac.level[type.ind])*(fac.level[type.ind]+1))
-    weight.u <- rep(temp.w,times=Index.use$length[type.ind])
+    weight.u <- rep(temp.w, times=Index.use$length[type.ind])
 
     ## Combine two weights. 
     output <- list("weight.ols"=weight, "weight.fac"=weight.u)
