@@ -1,141 +1,248 @@
-plot.CausalANOVA <- function(x,fac.name,main=NULL,xlab,ylab, ...){
-
-    theme_minimalN <- function (base_size = 12, size.x=20, size.y=20, size.l=20, size.t=20,base_family = "")
-        {
-            theme_bw(base_size = base_size, base_family = base_family) %+replace%
-            theme (
-                axis.text.x = element_text(family = base_family, size = size.x * 0.8, lineheight = 0.9, vjust = 1, angle=0,
-                    face="bold"),
-                axis.text.y = element_text(family = base_family, size = size.y * 0.8, lineheight = 0.9,
-                    hjust = 0, angle=0,
-                    face="bold"),
-                ## axis.text.y = element_blank(), 
-                axis.ticks = element_blank(), 
-                axis.title.x = element_text(family = base_family, size = size.t, vjust =0.5,angle=0,
-                    margin=margin(t=20,l=0,r=0,b =0),face="bold"),
-                ## axis.title.y = element_blank(), 
-                axis.title.y = element_text(family = base_family, size = size.t, angle = 90, vjust = 0.5,
-                    margin=margin(t=0,l=0,r=10,b =0),face="bold"), 
-                ## axis.ticks.length = unit(0.3, "lines"), 
-                ## axis.ticks.margin = unit(0.5, "lines"), 
-                legend.background = element_rect(colour = NA),
-                legend.margin = unit(0.4, "cm"), legend.key = element_rect(colour = NA),
-                legend.key.size = unit(8.0, "lines"), 
-                legend.key.width = NULL,
-                legend.key.height = unit(2, "lines"), 
-                legend.text = element_text(family = base_family, size = size.l * 0.8, angle=0,face="bold"),      
-                legend.text.align = NULL,
-                legend.title = element_blank(),
-                ## legend.title = element_text(family = base_family, size = size.l * 0.8,
-                ##     face = "bold", hjust = 0, angle=0), 
-                legend.title.align = NULL,
-                legend.position = "top", 
-                legend.direction = "horizontal", 
-                legend.justification = "center",
-                legend.box.just = "top",
-                
-                panel.background = element_rect(fill = "white", colour = NA), 
-                panel.border = element_rect(fill = NA, colour = "white"), 
-                panel.grid.major = element_line(colour = "white", size = 0.2), 
-                panel.grid.minor = element_line(colour = "white", size = 0.5), 
-                panel.margin = unit(0.25, "lines"),
-                
-                strip.background = element_rect(fill = NA, colour = NA),
-                strip.text.x = element_text(family = base_family, size = base_size * 0.8, angle=0, margin(100)), 
-                strip.text.y = element_text(family = base_family, size = base_size * 0.8, angle = -90), 
-                plot.background = element_rect(colour = NA),
-                plot.title = element_text(family = base_family, size = size.t * 1.2, angle=0), 
-                plot.margin = unit(c(1, 1, 2, 2), "lines")
-            ) 
+plot.CausalANOVA <- function(x, fac.name,
+                             treat.ind=1,
+                             type="ConditionalEffect",
+                             main=NULL, space=15, adj.p=2.3,
+                             add=FALSE, col="black",
+                             xlim, ...){
+    
+    ## HouseKeeping 
+    if(x$Gorder==1 | missing(fac.name)==TRUE){
+        type <- "AME"
+    }
+    
+    if(type=="AME"){
+        formula <- x$formula
+        terms.f <- terms(formula, data=x$data)
+        order.f <- attr(terms.f, "order")
+        var.name <- attr(terms.f, "term.labels")[order.f==1]
+        level.list <- x$level.list        
+        inference <- x$inference
+        
+        if(inference==TRUE){
+            AME.CI  <- x$CI.table[which(order.f==1)]
+            font <- CI.value <- CI.up <- CI.low <- c()
+            Name <- list()
+            for(z in 1:length(AME.CI)){
+                Name0 <- c(paste("Factor: ", var.name[z], sep=""),
+                           paste("    ", level.list[[z]],sep=""))
+                Name <- c(Name, Name0)
+                font <- c(font, c(2, rep(1, length(level.list[[z]]))))
+                AME.base <- AME.CI[[z]]
+                AME.base[,3] <- AME.base[,1] -1.96*AME.base[,2]
+                AME.base[,4] <- AME.base[,1] +1.96*AME.base[,2]
+                CI.value <- c(CI.value, c(NA, AME.base[,1]))
+                CI.up <- c(CI.up, c(NA, AME.base[,4]))
+                CI.low <- c(CI.low, c(NA, AME.base[,3]))               
+            }
+            xlim.min <- min(na.omit(CI.low))
+            xlim.max <- max(na.omit(CI.up))
+        }else{
+            AME.CI  <- x$AME
+            font <- CI.value <- c()
+            Name <- list()
+            for(z in 1:length(x$AME)){
+                Name0 <- c(paste("Factor: ", var.name[z], sep=""),
+                           paste("    ", level.list[[z]],sep=""))
+                Name <- c(Name, Name0)
+                font <- c(font, c(2, rep(1, length(level.list[[z]]))))
+                ame <- unlist(AME.CI[[z]])
+                ame <- ame - ame[length(ame)]
+                CI.value <- c(CI.value, NA, ame)
+            }
+            xlim.min <- min(na.omit(CI.value))
+            xlim.max <- max(na.omit(CI.value))
+        }
+        
+        if(missing(xlim)==FALSE){
+            par(mar=c(4,space,2,2))
+            plot(rev(CI.value), seq(from=1, to=length(CI.value)), pch=19, yaxt="n", xlim=xlim,
+                 ylim=c(0, length(CI.value)+1), ylab="", main="AME", xlab="AME", col=col)
+            if(inference==TRUE){
+                segments(rev(CI.low), seq(from=1, to=length(CI.value)),
+                         rev(CI.up), seq(from=1, to=length(CI.value)), lwd=2,col=col)
+            }
+            Axis(side=2, at=seq(from=1, to=length(CI.value)), labels=rep("",length(Name)))
+            Axis(side=2, at=seq(from=1, to=length(CI.value)), labels=rev(Name),
+                 las=2, hadj=0, line=10, tck=0, lwd=0)
+            abline(v=0, lty=2)
+        }else{
+            par(mar=c(4,space,2,2))
+            plot(rev(CI.value), seq(from=1, to=length(CI.value)), pch=19, yaxt="n",
+                 xlim=c(xlim.min, xlim.max),
+                 ylim=c(0, length(CI.value)+1), ylab="", main="AME", xlab="AME", col=col)
+            if(inference==TRUE){
+                segments(rev(CI.low), seq(from=1, to=length(CI.value)),
+                         rev(CI.up), seq(from=1, to=length(CI.value)), lwd=2,col=col)
+            }
+            Axis(side=2, at=seq(from=1, to=length(CI.value)), labels=rep("",length(Name)))
+            Axis(side=2, at=seq(from=1, to=length(CI.value)), labels=rev(Name),
+                 las=2, hadj=0, line=10, tck=0, lwd=0)
+            abline(v=0, lty=2)
+        }        
+        
+    }else if(type=="AMIE"){
+        formula <- x$formula
+        indTwo <- x$indTwo
+        indThree <- x$indThree
+        plot.Gorder <- length(fac.name)
+        terms.f <- terms(formula,data=x$data)
+        order.f <- attr(terms.f, "order")
+        var.name <- attr(terms.f, "term.labels")[order.f==1]
+        inference <- x$inference
+        AMIE2 <- x$AMIE2
+        AMIE3 <- x$AMIE3
+        
+        ## This accomodate Three-ways 
+        Fac.ind <- c()
+        for(z in 1:length(fac.name)){
+            Fac.ind[z] <- which(fac.name[z]==var.name)
+        }
+        Fac.ind <- Fac.ind[order(Fac.ind)]
+        
+        ## Find the index
+        if(plot.Gorder==2){
+            INT.ind <- which(apply(c(Fac.ind[1], Fac.ind[2]) == indTwo, 2, all)==TRUE)
+            if(inference==TRUE) AMIE.CI  <- x$CI.table[which(order.f==2)]
+            else AMIE.CI  <- AMIE2
+        }
+        if(plot.Gorder==3){
+            INT.ind <- which(apply(c(Fac.ind[1], Fac.ind[2], Fac.ind[3]) == indThree, 2, all)==TRUE)
+            if(inference==TRUE) AMIE.CI  <- x$CI.table[which(order.f==3)]
+            else AMIE.CI  <- AMIE3
         }
 
-
-    TwowayPlot <- function(two.way,i,main,orderx,ordery,VarN1,VarN2){
+        ## Plot: AMIE (just need fac.name)
+        if(inference==TRUE){
+            CI.value <- AMIE.CI[[INT.ind]][,1]
+            CI.up <- AMIE.CI[[INT.ind]][,4]
+            CI.low <-  AMIE.CI[[INT.ind]][,3]
+            Name   <- rownames(AMIE.CI[[INT.ind]])
+            xlim.min <- min(na.omit(CI.low))
+            xlim.max <- max(na.omit(CI.up))
+        }else{
+            amie <- unlist(AMIE.CI[[INT.ind]])
+            CI.value <- amie - amie[length(amie)]
+            Name <- names(CI.value)
+            xlim.min <- min(na.omit(CI.value))
+            xlim.max <- max(na.omit(CI.value))
+        }
         
-        min.v <- min(two.way[[i]])
-        max.v <- max(two.way[[i]])
         
-        data.plot <- as.data.frame(cbind(expand.grid(orderx,ordery),c(two.way[[i]])))
-        colnames(data.plot) <- c("Var1","Var2","Coefficients")
+        ## plot.value <- plot.value - plot.value[base.ind]
         
-        ## orderx <- as.character(unique(two.way[[i]]$name.1))
-        ## ordery <- as.character(unique(two.way[[i]]$name.2))
+        max.nchar <- max(nchar(Name))/adj.p
+        ## Create blank plot first
+        if(missing(xlim)==FALSE){
+            par(mar=c(4,space,2,2))
+            plot(rev(CI.value), seq(from=1, to=length(CI.value)), pch=19, yaxt="n", xlim=xlim,
+                 ylim=c(0, length(CI.value)+1), ylab="", main="AMIE", xlab="AMIE",col=col)
+            if(inference==TRUE){
+                segments(rev(CI.low), seq(from=1, to=length(CI.value)),
+                         rev(CI.up), seq(from=1, to=length(CI.value)), lwd=2, col=col)
+            }
+            Axis(side=2, at=seq(from=1, to=length(CI.value)), labels=rep("",length(Name)))
+            Axis(side=2, at=seq(from=1, to=length(CI.value)), labels=rev(Name),
+                 las=2, hadj=0, line=max.nchar, tck=0, lwd=0)
+            abline(v=0, lty=2)                         
+        }else{
+            par(mar=c(4,space,2,2))
+            plot(rev(CI.value), seq(from=1, to=length(CI.value)), pch=19, yaxt="n",
+                 xlim=c(xlim.min, xlim.max),
+                 ylim=c(0, length(CI.value)+1), ylab="", main="AMIE", xlab="AMIE",col=col)
+            if(inference==TRUE){
+                segments(rev(CI.low), seq(from=1, to=length(CI.value)),
+                         rev(CI.up), seq(from=1, to=length(CI.value)), lwd=2, col=col)
+            }
+            Axis(side=2, at=seq(from=1, to=length(CI.value)), labels=rep("",length(Name)))
+            Axis(side=2, at=seq(from=1, to=length(CI.value)), labels=rev(Name),
+                 las=2, hadj=0, line=max.nchar, tck=0, lwd=0)
+            abline(v=0, lty=2)
+        }
         
-        p <- ggplot(as.data.frame(data.plot), 
-                    aes_string(x='Var1',
-                        y='Var2',
-                        fill='Coefficients')) +
-                            ggtitle(main) + 
-                                geom_tile(color="black") +
-                                    xlab(VarN1) + ylab(VarN2)+
-                                        scale_fill_gradient2(low = "#3794bf",high = "#df8640",mid="white",
-                                                             limit=c(min.v, max.v))  +
-                                                                 theme(legend.text=element_text(size=20),
-                                                                       axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1),
-                                                                       axis.title=element_text(size=20,face="bold"),
-                                                                       legend.position="top")  + 
-                                                                           theme_minimalN(size.x=20,
-                                                                                          size.y=20,
-                                                                                          size.l=20,size.t=20) +                                           
-                                                                                              scale_x_discrete(limits=orderx) + 
-                                                                                                  scale_y_discrete(limits=ordery)
-        return(p)
-    }
+    }else if(type=="ConditionalEffect"){      
+        treat.fac <- fac.name[treat.ind]
+        if(treat.ind==2) cond.ind <- 1
+        else if(treat.ind==1) cond.ind <- 2
+        cond.fac  <- fac.name[cond.ind]
+        inference <- x$inference
+        CE <- ConditionalEffect(object=x, treat.fac=treat.fac, inference=inference,
+                                cond.fac=cond.fac, base.ind=NULL, verbose=FALSE)
+        CE.plot <- CE$Conditional
+        cond.level <- CE$cond.level
+        treat.level <- CE$treat.level
 
-    object <- x
-    rm(x)
+        if(inference==TRUE){
+            font <- CE.value <- CE.up <- CE.low <- c()
+            Name <- list()
+            for(z in 1:length(CE.plot)){
+                Name0 <- c(paste(cond.fac, "=", cond.level[z]),
+                           paste("    ", treat.level,sep=""))
+                Name <- c(Name, Name0)
+                font <- c(font, c(2, rep(1, length(treat.level))))
+                CE.value <- c(CE.value, c(NA, CE.plot[[z]][,1]))
+                CE.up <- c(CE.up, c(NA, CE.plot[[z]][,4]))
+                CE.low <- c(CE.low, c(NA, CE.plot[[z]][,3]))
+            }
+            xlim.min <- min(na.omit(CE.low))
+            xlim.max <- max(na.omit(CE.up))
 
-    if(missing(fac.name)){
-        warning("Specify two columns of interest.")
-    }
+            if(missing(xlim)==FALSE){
+                par(mar=c(4,space,2,2))
+                plot(rev(CE.value), seq(from=1, to=length(CE.value)), pch=19, yaxt="n", xlim=xlim,
+                     ylim=c(0, length(CE.value)+1), ylab="", xlab="Conditional Effects", col=col)
+                segments(rev(CE.low), seq(from=1, to=length(CE.value)),
+                         rev(CE.up), seq(from=1, to=length(CE.value)), lwd=2, col=col)
+                Axis(side=2, at=seq(from=1, to=length(CE.value)), labels=rep("",length(Name)))
+                Axis(side=2, at=seq(from=1, to=length(CE.value)), labels=rev(Name),
+                     las=2, hadj=0, line=10, tck=0, lwd=0)
+                abline(v=0, lty=2)
+            }else{
+                par(mar=c(4,space,2,2))
+                plot(rev(CE.value), seq(from=1, to=length(CE.value)), pch=19, yaxt="n",
+                     xlim=c(xlim.min, xlim.max),
+                     ylim=c(0, length(CE.value)+1), ylab="", xlab="Conditional Effects", col=col)
+                segments(rev(CE.low), seq(from=1, to=length(CE.value)),
+                         rev(CE.up), seq(from=1, to=length(CE.value)), lwd=2, col=col)
+                Axis(side=2, at=seq(from=1, to=length(CE.value)), labels=rep("",length(Name)))
+                Axis(side=2, at=seq(from=1, to=length(CE.value)), labels=rev(Name),
+                     las=2, hadj=0, line=10, tck=0, lwd=0)
+                abline(v=0, lty=2) 
+            }
+        }else{
+            font <- CE.value <- c()
+            Name <- list()
+            for(z in 1:length(CE.plot)){
+                Name0 <- c(paste(cond.fac, "=", cond.level[z]),
+                           paste("    ", treat.level,sep=""))
+                Name <- c(Name, Name0)
+                font <- c(font, c(2, rep(1, length(treat.level))))
+                CE.value <- c(CE.value, c(NA, CE.plot[[z]]))
+            }
+            xlim.min <- min(na.omit(CE.value))
+            xlim.max <- max(na.omit(CE.value))
 
-    if(class(object)[2]=="stab"){
-        fit <- object$fit        
-    }else{
-        fit <- object
-    }
-        
-    n.fac <- length(fit$fac.level)
-    data <- fit$data
-    formula <- fit$formula
-    
-    ## require(ggplot2)
-    ## source("TwowayPlot1125.R")
-    
-    ## TwoPlotR2
-    ## if(fac.int[2]<=fac.int[1]){
-    ##     warning("fac.int[1] should be smaller than fac.int[2]")
-    ## }
-    X <- model.frame(formula, data=data)[,-1]
-    fac.int <- which(colnames(X) %in% fac.name)
-    if(length(fac.int)!=2){
-        warning("Use two column names in the data.")
-    }
-    
-    combTwo <- combn(n.fac,2)
-    fac.int.ind <- which(apply(combTwo == fac.int,2,function(x) all(x)==TRUE))
-    ind.u <- n.fac + fac.int.ind
-    
-    ## #################
-    ## Setup
-    ## #################
-    
-    orderx <- levels(X[,fac.int[1]])
-    ordery <- levels(X[,fac.int[2]])
-
-    if(missing(xlab)){
-        xlab <- colnames(X)[fac.int[1]]
-    }
-    if(missing(ylab)){
-        ylab <- colnames(X)[fac.int[2]]
-    }
-    
-    ## ####### 
-    ## Plot
-    ## ####### 
-    plotTwo <- TwowayPlot(fit$coefs,i=ind.u,main=main,orderx=orderx,ordery=ordery,
-                          VarN1=xlab,VarN2=ylab)
-
-    print(plotTwo)
-    cat("Note: Baseline is the mean of the AMIEs as in the figures of Egami and Imai(2016+). \n")
+            if(missing(xlim)==FALSE){
+                if(add==FALSE){
+                    par(mar=c(4,space,2,2))
+                }                    
+                plot(rev(CE.value), seq(from=1, to=length(CE.value)), pch=19, yaxt="n", xlim=xlim,
+                     ylim=c(0, length(CE.value)+1), ylab="", xlab="Conditional Effects", col=col)
+                Axis(side=2, at=seq(from=1, to=length(CE.value)), labels=rep("",length(Name)))
+                Axis(side=2, at=seq(from=1, to=length(CE.value)), labels=rev(Name),
+                     las=2, hadj=0, line=10, tck=0, lwd=0)
+                abline(v=0, lty=2)
+            }else{
+                if(add==FALSE){
+                    par(mar=c(4,space,2,2))
+                } 
+                plot(rev(CE.value), seq(from=1, to=length(CE.value)), pch=19, yaxt="n",
+                     xlim=c(xlim.min, xlim.max),
+                     ylim=c(0, length(CE.value)+1), ylab="", xlab="Conditional Effects", col=col)
+                Axis(side=2, at=seq(from=1, to=length(CE.value)), labels=rep("",length(Name)))
+                Axis(side=2, at=seq(from=1, to=length(CE.value)), labels=rev(Name),
+                     las=2, hadj=0, line=10, tck=0, lwd=0)
+                abline(v=0, lty=2) 
+            }
+        }
+    }    
 }

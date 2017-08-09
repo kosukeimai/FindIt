@@ -1,12 +1,11 @@
 Package: FindIt
-Version: 1.0
-Date: 2016-12-22
+Version: 1.1
+Date: 2017-08-08
 Title: Finding Heterogeneous Treatment Effects
 Author: Naoki Egami <negami@princeton.edu>, Marc Ratkovic <ratkovic@princeton.edu>, Kosuke Imai <kimai@princeton.edu>,
 Maintainer: Naoki Egami <negami@princeton.edu>
 Depends: R (>= 3.1.0), arm
-Imports: glmnet, lars, Matrix, quadprog, ggplot2, stats, graphics,
-        utils
+Imports: glmnet, lars, Matrix, quadprog, ggplot2, glinternet, igraph, sandwich, lmtest, stats, graphics, utils
 Description: The heterogeneous treatment effect estimation procedure 
         proposed by Imai and Ratkovic (2013)<DOI: 10.1214/12-AOAS593>.  
         The proposed method is applicable, for
@@ -19,10 +18,15 @@ Description: The heterogeneous treatment effect estimation procedure
         pre-treatment parameters and causal heterogeneity parameters of
         interest. This allows for the qualitative distinction between
         causal and other parameters, thereby making the variable
-        selection suitable for the exploration of causal heterogeneity. 
-	The package also contains the function, CausalANOVA, which estimates 
-	the average marginal interaction effects by a regularized ANOVA as 
-	proposed by Egami and Imai (2016+). 
+        selection suitable for the exploration of causal heterogeneity. 	
+        The package also contains a class of functions, CausalANOVA, 
+        which estimates the average marginal interaction effects (AMIEs)
+        by a regularized ANOVA as proposed by Egami and Imai (2016+). 
+        It contains a variety of regularization techniques to facilitate 
+	analysis of large factorial experiments. 
 LazyLoad: yes
 LazyData: yes
 License: GPL (>= 2)
+Repository: CRAN
+Packaged: 2017-08-09 08:31:22 UTC; naokiegami
+Date/Publication: 2017-08-09 12:11:22

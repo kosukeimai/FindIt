@@ -1,11 +1,12 @@
 ##################################################
 ## Naoki Egami
 ## 2016/08/22
+## Updated on 2017/07/20
 ##################################################
 
 
 ## Global function: (it does change depending on the formula)
-CreatelevelIndex <- function(fac.level,ord.fac,Gorder){
+CreatelevelIndex <- function(fac.level,ord.fac, indTwo=NULL, indThree=NULL, Gorder){
     if(missing(Gorder)){
         Gorder <- 3 
     }
@@ -23,10 +24,14 @@ CreatelevelIndex <- function(fac.level,ord.fac,Gorder){
     fac.name <- paste("Fac",seq(1:n.fac),sep=".")
 
     ## Setup
-    indTwo <- combn(seq(1:n.fac),2)
-    if(Gorder==3){
+    if(is.null(indTwo)==TRUE){
+        indTwo <- combn(seq(1:n.fac),2)
+    }
+    if(is.null(indThree)==TRUE & Gorder==3){
         indThree <- combn(seq(1:n.fac),3)
     }
+
+    ## %%%% IndTwo can be imported. 
 
     ## For one-way
     Index.one <- matrix(0,nrow=0,ncol=(5 + n.fac))
@@ -42,22 +47,24 @@ CreatelevelIndex <- function(fac.level,ord.fac,Gorder){
     ## Index.one
 
     ## For two-way
-    Index.two <- matrix(0,nrow=0,ncol=(5 + n.fac))
-    BaseTwo <- as.data.frame(cbind(rep(c(1,0),3),c(rep(0,2),rep(1,4))))
-    BaseTwo <- cbind(rep(2,6),BaseTwo)
-    for(z in 1:ncol(indTwo)){
-        FacTwo  <- matrix(0,ncol=n.fac,nrow=6)
-        FacTwo[,indTwo[,z]] <- cbind(rep(c(1,2,1),each=2),rep(c(1,1,2),each=2))
-        fac.int.level <- fac.level[indTwo[1,z]]*fac.level[indTwo[2,z]]
-        fac.int1 <- dif.level[indTwo[1,z]]*fac.level[indTwo[2,z]]
-        fac.int2 <- fac.level[indTwo[1,z]]*dif.level[indTwo[2,z]]
-        length <- c(rep(fac.int.level,each=2),rep(fac.int1,each=2),rep(fac.int2,each=2))
-        Index.two <- rbind(Index.two, cbind(length,BaseTwo,FacTwo))
+    if(Gorder>=2){
+        Index.two <- matrix(0,nrow=0,ncol=(5 + n.fac))
+        BaseTwo <- as.data.frame(cbind(rep(c(1,0),3),c(rep(0,2),rep(1,4))))
+        BaseTwo <- cbind(rep(2,6),BaseTwo)
+        for(z in 1:ncol(indTwo)){
+            FacTwo  <- matrix(0,ncol=n.fac,nrow=6)
+            FacTwo[,indTwo[,z]] <- cbind(rep(c(1,2,1),each=2),rep(c(1,1,2),each=2))
+            fac.int.level <- fac.level[indTwo[1,z]]*fac.level[indTwo[2,z]]
+            fac.int1 <- dif.level[indTwo[1,z]]*fac.level[indTwo[2,z]]
+            fac.int2 <- fac.level[indTwo[1,z]]*dif.level[indTwo[2,z]]
+            length <- c(rep(fac.int.level,each=2),rep(fac.int1,each=2),rep(fac.int2,each=2))
+            Index.two <- rbind(Index.two, cbind(length,BaseTwo,FacTwo))
+        }
+        colnames(Index.two) <- c("length","order","plus","dif",fac.name)
     }
-    colnames(Index.two) <- c("length","order","plus","dif",fac.name)
     ## Index.two
-
-    if(Gorder > 2){
+    
+    if(Gorder == 3){
         ## For three-way
         Index.three <- matrix(0,nrow=0,ncol=(5 + n.fac))
         BaseThree <- as.data.frame(cbind(rep(c(1,0),4),c(rep(0,2),rep(1,6))))
@@ -79,13 +86,15 @@ CreatelevelIndex <- function(fac.level,ord.fac,Gorder){
     }
     
     ## Add Start Index
-    if(Gorder >2){
-        Index.Mat <- rbind(Index.one, Index.two, Index.three)
+    if(Gorder==1){
+        Index.Mat <- Index.one
     }else if(Gorder ==2){
         Index.Mat <- rbind(Index.one, Index.two)
+    }else if(Gorder ==3){
+        Index.Mat <- rbind(Index.one, Index.two,Index.three)
     }
     start <- c(1,cumsum(Index.Mat$length)[-nrow(Index.Mat)]+1)
-
+    
     Index.Mat <- cbind(start,Index.Mat)
     
     return(Index.Mat)

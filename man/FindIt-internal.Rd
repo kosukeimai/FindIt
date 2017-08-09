@@ -13,7 +13,13 @@
 \alias{rangeCausalANOVAFit}
 \alias{CausalANOVAFit}
 \alias{stab.CausalANOVA}
-\alias{AMIEFit}
+\alias{ScreenINT}
+\alias{glinternet.cv}
+\alias{indTwo2Three}
+\alias{NoRegularization}
+\alias{Collapsing}
+\alias{FullVCOV}
+\alias{cluster_se_glm}
 \alias{makeallway}
 \alias{maketwoway}
 \description{Internal FindIt functions}
