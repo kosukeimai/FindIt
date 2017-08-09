@@ -2,7 +2,7 @@
 ## Naoki Egami
 ## 2016/08/25
 ##################################################
-CreateANOVAconst <- function(fac.level,ord.fac,Gorder, facCons){
+CreateANOVAconst <- function(fac.level,ord.fac,Gorder,facCons, indTwo=NULL, indThree=NULL){
     ## Two-way Interactions
     TwoWayConst <- function(alevel,blevel,type="alpha"){
         ## type determines which to fix
@@ -39,7 +39,9 @@ CreateANOVAconst <- function(fac.level,ord.fac,Gorder, facCons){
 
     ## Even with ordered Categorical varialbe, almost the same
 
-    levelIndex <- CreatelevelIndex(fac.level=fac.level,ord.fac=ord.fac, Gorder=Gorder)
+    ## We can fix this. 
+    levelIndex <- CreatelevelIndex(fac.level=fac.level,ord.fac=ord.fac,Gorder=Gorder,
+                                   indTwo=indTwo, indThree=indThree)
     Fac.index <- levelIndex[,regexpr("Fac",colnames(levelIndex))>0]
     use.ind <-  (levelIndex$plus==1)*(levelIndex$dif==0)
     Index.use <- levelIndex[use.ind==1,]

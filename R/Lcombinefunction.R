@@ -4,7 +4,7 @@
 ##################################################
 
 
-Lcombinefunction <- function(fac.level,ord.fac,facCons,Gorder=3){
+Lcombinefunction <- function(fac.level,ord.fac,facCons,Gorder=3, indTwo=NULL, indThree=NULL){
 
     ## Make the difference in three-way interactions
     D3function <- function(alevel,blevel,clevel,type="A",ordABC=c(FALSE,FALSE,FALSE)){
@@ -265,8 +265,10 @@ Lcombinefunction <- function(fac.level,ord.fac,facCons,Gorder=3){
 
     ## fac.level <- c(4,7,4)
     ## ord <- c(TRUE,TRUE,TRUE)
-    
-    levelIndex <- CreatelevelIndex(fac.level=fac.level,ord.fac=ord.fac,Gorder=Gorder)
+
+    ## maybe we can change here. 
+    levelIndex <- CreatelevelIndex(fac.level=fac.level,ord.fac=ord.fac,Gorder=Gorder,
+                                   indTwo=indTwo, indThree=indThree)
     use.ind <- (levelIndex$plus==1) * (levelIndex$dif==0)
     Index.use <- levelIndex[use.ind==1,]
     Fac.index <- Index.use[,regexpr("Fac",colnames(Index.use))>0]

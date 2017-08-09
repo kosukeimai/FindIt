@@ -8,7 +8,8 @@
 
 
 ## I need to make this general for the general formula 
-Zcombinefunction <- function(X,fac.level,ord.fac,Gorder){
+Zcombinefunction <- function(X,fac.level,ord.fac,Gorder,
+                             indTwo=NULL, indThree=NULL){
 
     
     Zonefunction <-function(Xone,nlevel,ord=FALSE){
@@ -69,7 +70,8 @@ Zcombinefunction <- function(X,fac.level,ord.fac,Gorder){
     ## fac.level <- c(4,7,4)
     ## ord <- c(TRUE,TRUE,TRUE)
 
-    levelIndex <- CreatelevelIndex(fac.level=fac.level,ord.fac=ord.fac,Gorder=Gorder)
+    levelIndex <- CreatelevelIndex(fac.level=fac.level,ord.fac=ord.fac,Gorder=Gorder,
+                                   indTwo=indTwo, indThree=indThree)
     use.ind <- (levelIndex$plus==1) * (levelIndex$dif==0)
     Index.use <- levelIndex[use.ind==1,]
     Index.use$start <- c(1,cumsum(Index.use$length)[-nrow(Index.use)]+1)
