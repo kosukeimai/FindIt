@@ -2,12 +2,13 @@
 ## Naoki Egami
 ######################################## 
 
-CoefExtract <- function(BaseCoef, base.name, fac.level, ord.fac, Gorder){
+CoefExtract <- function(BaseCoef, base.name, fac.level, ord.fac, Gorder, indTwo=NULL, indThree=NULL){
     ## input: BaseCoef
     ## I need to remove intercept first 
     
     n.fac <- length(fac.level)   
-    levelIndex <- CreatelevelIndex(fac.level=fac.level,ord.fac=ord.fac, Gorder=Gorder)
+    levelIndex <- CreatelevelIndex(fac.level=fac.level,ord.fac=ord.fac,Gorder=Gorder,
+                                   indTwo=indTwo, indThree=indThree)
     levelIndex$end <- cumsum(levelIndex$length)
     use.ind <- levelIndex$dif==0
     coefIndex <- levelIndex[use.ind==1,]
