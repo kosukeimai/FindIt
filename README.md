@@ -3,7 +3,7 @@
 ## FindIt: Finding Heterogeneous Treatment Effects
 
 The heterogeneous treatment effect estimation procedure 
-proposed by Imai and Ratkovic (2013)<DOI: 10.1214/12-AOAS593>.  
+proposed by [Imai and Ratkovic (2013)](https://doi.org/10.1214/12-AOAS593).  
 The proposed method is applicable, for example, when selecting 
 a small number of most (or least) efficacious treatments from 
 a large number of alternative treatments as well as when 
@@ -16,4 +16,4 @@ causal and other parameters, thereby making the variable
 selection suitable for the exploration of causal heterogeneity. The 
 package also contains the function, CausalANOVA, which estimates 
 the average marginal interaction effects by a regularized ANOVA as 
-proposed by Egami and Imai (2016+). 
+proposed by [Egami and Imai (2016+)](http://imai.princeton.edu/research/choice.html). 
