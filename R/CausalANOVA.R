@@ -9,46 +9,46 @@
 #' Users can implement regularization in order to reduces false discovery rate
 #' and facilitates interpretation. This is particularly useful when analyzing
 #' factorial experiments with a large number of factors, each having many
-#' levels.  \itemize{ \itemWhen \code{screen=TRUE}, the function selects
+#' levels.  \itemize{ \item When \code{screen=TRUE}, the function selects
 #' significant factor interactions with \code{glinternet} (Lim and Hastie 2015)
 #' before estimating the AMEs and AMIEs. This option is recommended when there
 #' are many factors, e.g., more than 6 factors. Alternatively, users can
 #' pre-specify interactions of interest using \code{int2.formula} and
-#' \code{int3.formula}. \itemWhen \code{collapse=TRUE}, the function collapses
+#' \code{int3.formula}. \item When \code{collapse=TRUE}, the function collapses
 #' insignificant levels within each factor by GashANOVA (Post and Bondell 2013)
 #' before estimating the AMEs and AMIEs. This option is recommended when there
 #' are many levels within some factors, e.g., more than 6 levels. }
 #' 
-#' Inference after Regularization: \itemize{ \itemWhen \code{screen=TRUE} or
+#' Inference after Regularization: \itemize{ \item When \code{screen=TRUE} or
 #' \code{collapse=TRUE}, in order to make valid inference after regularization,
 #' we recommend to use \code{test.CausalANOVA} function. It takes the output
 #' from \code{CausalANOVA} function and estimate the AMEs and AMIEs with
 #' \code{newdata} and provide confidence intervals. Ideally, users should split
 #' samples into two; use a half for regularization with \code{CausalANOVA}
 #' function and use the other half for inference with \code{test.CausalANOVA}.
-#' \itemIf users do not need regularization, specify \code{screen=FALSE} and
+#' \item If users do not need regularization, specify \code{screen=FALSE} and
 #' \code{collapse=FALSE}. The function estiamtes the AMEs and AMIEs and compute
 #' confidence intervals with the full sample. }
 #' 
-#' Suggested Workflow: (See Examples below as well) \enumerate{ \itemSpecify
+#' Suggested Workflow: (See Examples below as well) \enumerate{ \item Specify
 #' the order of levels within each factor using \code{levels()}.  When
 #' \code{collapse=TRUE}, the function places penalties on the differences
 #' between adjacent levels when levels are ordered, it is crucial to specify
-#' the order of levels within each factor carefully. \itemRun
-#' \code{CausalANOVA}. \enumerate{ \itemSpecify \code{formula} to indicate
+#' the order of levels within each factor carefully. \item Run
+#' \code{CausalANOVA}. \enumerate{ \item Specify \code{formula} to indicate
 #' outcomes and treatment variables and \code{nway} to indicate the order of
-#' interactions. \itemSpecify \code{diff=TRUE} and \code{pair.id} if the
-#' outcome is the choice between a pair. \itemSpecify \code{screen}.
+#' interactions. \item Specify \code{diff=TRUE} and \code{pair.id} if the
+#' outcome is the choice between a pair. \item Specify \code{screen}.
 #' \code{screen=TRUE} to implement data-driven selection of factor
 #' interactions. \code{screen=FALSE} to specify interactions through
-#' \code{int2.formula} and \code{int3.formula} by hand. \itemSpecify
+#' \code{int2.formula} and \code{int3.formula} by hand. \item Specify
 #' \code{collapse}. \code{collapse=TRUE} to implement data-driven collapsing of
 #' insignificant levels. \code{collapse=FALSE} to use the original nubmber of
 #' levels.}
 #' 
-#' \itemRun \code{test.CausalANOVA} when \code{select=TRUE} or
-#' \code{collapse=TRUE}.  \itemRun \code{summary} and \code{plot} to explore
-#' the AMEs and AMIEs. \itemEstimate conditional effects using
+#' \item Run \code{test.CausalANOVA} when \code{select=TRUE} or
+#' \code{collapse=TRUE}.  \item Run \code{summary} and \code{plot} to explore
+#' the AMEs and AMIEs. \item Estimate conditional effects using
 #' \code{ConditionalEffect} function and visualize them using \code{plot}
 #' function. }
 #' 
