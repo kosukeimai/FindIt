@@ -1,3 +1,28 @@
+#' Plot estimated treatment effects or predicted outcomes for each treatment
+#' combination.
+#' 
+#' Plot estimated treatment effects when \code{treat.type="single"} and
+#' predicted outcomes for each treatment combination when
+#' \code{treat.type="multiple"}.
+#' 
+#' Plot estimated treatment effects when \code{treat.type="single"} and
+#' predicted outcomes for each treatment combination when
+#' \code{treat.type="multiple"}.
+#' 
+#' @param x output from \code{predict.FindIt}.
+#' @param main the argument specifying the main title of the plot.
+#' @param xlab the argument specifying the name of x axis.
+#' @param ylab the argument specifying the name of y axis.
+#' @param \dots further arguments passed to or from other methods.
+#' @return \item{plot}{Plot estimated treatment effects when
+#' \code{treat.type="single"} and predicted outcomes for each treatment
+#' combination when \code{treat.type="multiple"}.}
+#' @author Naoki Egami, Marc Ratkovic and Kosuke Imai.
+#' @examples
+#' 
+#' ## See the help page for FindIt() for an example.
+#' 	
+#' 
 plot.PredictFindIt <- function(x,main,xlab,ylab, ...){
     labels <- "index"
     if(missing(xlab)){

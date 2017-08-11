@@ -1,3 +1,33 @@
+#' Computing predicted values for each sample in the data.
+#' 
+#' \code{predict.FindIt} takes an output from \code{FindIt} and returns
+#' estimated treatment effects when \code{treat.type="single"} and predicted
+#' outcomes for each treatment combination when \code{treat.type="multiple"}.
+#' 
+#' Useful for computing estimated treatment effects or predicted outcomes for
+#' each treatment combination. By using \code{newdata}, researchers can compute
+#' them for any samples.
+#' 
+#' @param object An output object from \code{FindIt}.
+#' @param newdata An optional data frame in which to look for variables with
+#' which to predict. If omitted, the data used in \code{FindIt} is used.
+#' @param sort Whether to sort samples according to estimated treatment
+#' effects.
+#' @param decreasing When \code{sort=TRUE}, whether to sort the output in
+#' descending order or not.
+#' @param wts Weights.
+#' @param unique If \code{unique=TRUE}, \code{predict} returns estimated
+#' treatment effects or predicted outcomes for unique samples.
+#' @param \dots further arguments passed to or from other methods.
+#' @return \item{data}{A matrix of estimated treatment effects when
+#' \code{treat.type="single"} and predicted outcomes for each treatment
+#' combination when \code{treat.type="multiple"}.}
+#' @author Naoki Egami, Marc Ratkovic and Kosuke Imai.
+#' @examples
+#' 
+#' ## See the help page for FindIt() for an example.
+#' 	
+#' 
 predict.FindIt <- function (object, newdata, sort = TRUE, decreasing = TRUE, wts = 1, 
                             unique = FALSE, ...) 
 {
