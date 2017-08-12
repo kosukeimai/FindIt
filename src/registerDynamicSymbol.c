@@ -1,10 +1,23 @@
 // RegisteringDynamic Symbols
 
-#include <R.h>
-#include <Rinternals.h>
+#include <R_ext/RS.h>
+#include <stdlib.h> // for NULL
 #include <R_ext/Rdynload.h>
 
-void R_init_markovchain(DllInfo* info) {
-  R_registerRoutines(info, NULL, NULL, NULL, NULL);
-  R_useDynamicSymbols(info, TRUE);
+/* FIXME: 
+Check these declarations against the C/Fortran source code.
+*/
+
+/* .Fortran calls */
+extern void F77_NAME(lsei)(void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *);
+
+static const R_FortranMethodDef FortranEntries[] = {
+  {"lsei", (DL_FUNC) &F77_NAME(lsei), 21},
+  {NULL, NULL, 0}
+};
+
+void R_init_FindIt(DllInfo *dll)
+{
+  R_registerRoutines(dll, NULL, NULL, FortranEntries, NULL);
+  R_useDynamicSymbols(dll, FALSE);
 }

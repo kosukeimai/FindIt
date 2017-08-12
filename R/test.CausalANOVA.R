@@ -1,4 +1,36 @@
-
+#' Estimating the AMEs and AMIEs after Regularization with the CausalANOVA.
+#' 
+#' \code{test.CausalANOVA} estimates the AMEs and AMIEs with confidence
+#' intervals after regularization with \code{CausalANOVA}function.
+#' 
+#' See Details in \code{CausalANOVA}.
+#' 
+#' @param fit The output from \code{CausalANOAV} function.
+#' @param newdata A data frame to use for re-estimating the AMEs and AMIEs with
+#' confidence intervals.
+#' @param collapse.level A logical indicating whether to collapse insignificant
+#' levels within factors as suggested by the \code{CausalANOVA} output users
+#' provide.
+#' @param diff A logical indicating whether the outcome is the choice between a
+#' pair. If \code{diff=TRUE}, \code{pair.id} should specify a pair of
+#' comparison. Default is \code{FALSE}.
+#' @param pair.id (optional).Unique identifiers for each pair of comparison.
+#' This option is used when \code{diff=TRUE}.
+#' @param cluster Unique identifies with which cluster standard errors are
+#' computed.
+#' @return \item{fit}{The output of class \code{CausalANOVA}.}
+#' @author Naoki Egami and Kosuke Imai.
+#' @seealso \link{CausalANOVA}.
+#' @references Egami, Naoki and Kosuke Imai. 2016+. ``Causal Interaction in
+#' Factorial Experiments: Application to Conjoint Analysis.'' Working paper.
+#' \url{http://imai.princeton.edu/research/files/int.pdf}
+#' 
+#' Lim, M. and Hastie, T. 2015. Learning interactions via hierarchical
+#' group-lasso regularization. Journal of Computational and Graphical
+#' Statistics 24, 3, 627--654.
+#' 
+#' Post, J. B. and Bondell, H. D. 2013. ``Factor selection and structural
+#' identification in the interaction anova model.'' Biometrics 69, 1, 70--79.
 test.CausalANOVA <- function(fit, newdata, collapse.level=TRUE, diff=FALSE, pair.id=NULL,cluster=NULL){
     ## I need to install newdata as well as new information about pair.id
     

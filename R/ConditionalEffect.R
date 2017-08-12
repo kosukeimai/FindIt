@@ -1,4 +1,34 @@
-
+#' Estimating the Conditional Effects with the CausalANOVA.
+#' 
+#' \code{ConditionalEffect} estimates a variety of conditional effects using
+#' the ouput from \code{CausalANOVA}.
+#' 
+#' See Details in \code{CausalANOVA}.
+#' 
+#' @param object The output from \code{CausalANOAV} function.
+#' @param treat.fac The name of factor acting as the main treatment variable.
+#' @param cond.fac The name of factor acting as the conditioning (moderating)
+#' variable.
+#' @param base.ind An indicator for the baseline of the treatment factor.
+#' Default is 1.
+#' @param round Digits to round estimates. Default is 3.
+#' @param inference (optional). This argument is mainly for internal use. It
+#' indicates whether \code{CausalANOVA} has done inference or not.
+#' @param verbose Whether it prints the progress.
+#' @return \item{CondtionalEffects}{The summary of estimated conditional
+#' effects.} \item{...}{Arguments for the internal use.}
+#' @author Naoki Egami and Kosuke Imai.
+#' @seealso \link{CausalANOVA}.
+#' @references Egami, Naoki and Kosuke Imai. 2016+. ``Causal Interaction in
+#' Factorial Experiments: Application to Conjoint Analysis.'' Working paper.
+#' \url{http://imai.princeton.edu/research/files/int.pdf}
+#' 
+#' Lim, M. and Hastie, T. 2015. Learning interactions via hierarchical
+#' group-lasso regularization. Journal of Computational and Graphical
+#' Statistics 24, 3, 627--654.
+#' 
+#' Post, J. B. and Bondell, H. D. 2013. ``Factor selection and structural
+#' identification in the interaction anova model.'' Biometrics 69, 1, 70--79.
 ConditionalEffect <- function(object,treat.fac=NULL, cond.fac=NULL,
                               base.ind=1, round=3,
                               inference=NULL, verbose=TRUE){
