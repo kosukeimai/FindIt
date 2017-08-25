@@ -4,7 +4,7 @@
 #' regularization. By taking differences in coefficients, the function recovers
 #' the AMEs and AMIEs.
 #' 
-#' Regularization: \code{screen} and \code{collapse}.
+#' \bold{Regularization}: \code{screen} and \code{collapse}.
 #' 
 #' Users can implement regularization in order to reduces false discovery rate
 #' and facilitates interpretation. This is particularly useful when analyzing
@@ -19,7 +19,7 @@
 #' before estimating the AMEs and AMIEs. This option is recommended when there
 #' are many levels within some factors, e.g., more than 6 levels. }
 #' 
-#' Inference after Regularization: \itemize{ \item When \code{screen=TRUE} or
+#' \bold{Inference after Regularization}: \itemize{ \item When \code{screen=TRUE} or
 #' \code{collapse=TRUE}, in order to make valid inference after regularization,
 #' we recommend to use \code{test.CausalANOVA} function. It takes the output
 #' from \code{CausalANOVA} function and estimate the AMEs and AMIEs with
@@ -27,10 +27,10 @@
 #' samples into two; use a half for regularization with \code{CausalANOVA}
 #' function and use the other half for inference with \code{test.CausalANOVA}.
 #' \item If users do not need regularization, specify \code{screen=FALSE} and
-#' \code{collapse=FALSE}. The function estiamtes the AMEs and AMIEs and compute
+#' \code{collapse=FALSE}. The function estimates the AMEs and AMIEs and compute
 #' confidence intervals with the full sample. }
 #' 
-#' Suggested Workflow: (See Examples below as well) \enumerate{ \item Specify
+#' \bold{Suggested Workflow}: (See Examples below as well) \enumerate{ \item Specify
 #' the order of levels within each factor using \code{levels()}.  When
 #' \code{collapse=TRUE}, the function places penalties on the differences
 #' between adjacent levels when levels are ordered, it is crucial to specify
@@ -43,7 +43,7 @@
 #' interactions. \code{screen=FALSE} to specify interactions through
 #' \code{int2.formula} and \code{int3.formula} by hand. \item Specify
 #' \code{collapse}. \code{collapse=TRUE} to implement data-driven collapsing of
-#' insignificant levels. \code{collapse=FALSE} to use the original nubmber of
+#' insignificant levels. \code{collapse=FALSE} to use the original number of
 #' levels.}
 #' 
 #' \item Run \code{test.CausalANOVA} when \code{select=TRUE} or
@@ -65,7 +65,7 @@
 #' @param nway With \code{nway=1}, the function estimates the Average Marginal
 #' Effects (AMEs) only. With \code{nway=2}, the function estimates the AMEs and
 #' the two-way Average Marginal Interaction Effects (AMIEs). With
-#' \code{nway=3}, the function estiamtes the AMEs, the two-way and three-way
+#' \code{nway=3}, the function estimates the AMEs, the two-way and three-way
 #' AMIEs. Default is 1.
 #' @param diff A logical indicating whether the outcome is the choice between a
 #' pair.  If \code{diff=TRUE}, \code{pair.id} should specify a pair of
@@ -96,14 +96,14 @@
 #' @param collapse.type Type for collapsing levels within factors. (1)
 #' \code{"fixed"} collapses levels with the fixed cost parameter (specified by
 #' \code{collapse.cost}). (2) \code{"cv.min"} collapses levels with the cost
-#' paramter giving the minimum cross-validation error. This option might take
+#' parameter giving the minimum cross-validation error. This option might take
 #' time. (3) \code{"cv.1Std"} collapses with the cost parameter giving a
 #' cross-validation error that is within 1 standard deviation of the minimum cv
 #' error. This option might take time.
 #' @param collapse.cost (optional).A cost parameter ranging from 0 to 1. 1
 #' corresponds to no collapsing. The closer to 0, the stronger regularization.
 #' Default is 0.3.
-#' @param family A family of outcome varialbes. \code{"gaussian"} when
+#' @param family A family of outcome variables. \code{"gaussian"} when
 #' continuous outcomes \code{"binomial"} when binary outcomes.  Default is
 #' \code{"binomial"}.
 #' @param cluster Unique identifies with which cluster standard errors are
@@ -157,8 +157,8 @@
 #' data(Carlson)
 #' ## Specify the order of each factor
 #' Carlson$newRecordF<- factor(Carlson$newRecordF,ordered=TRUE,
-#'                          levels=c("YesLC", "YesDis","YesMP",
-#'                              "noLC","noDis","noMP","noBusi"))
+#'                             levels=c("YesLC", "YesDis","YesMP",
+#'                                      "noLC","noDis","noMP","noBusi"))
 #' Carlson$promise <- factor(Carlson$promise,ordered=TRUE,levels=c("jobs","clinic","education"))
 #' Carlson$coeth_voting <- factor(Carlson$coeth_voting,ordered=FALSE,levels=c("0","1"))
 #' Carlson$relevantdegree <- factor(Carlson$relevantdegree,ordered=FALSE,levels=c("0","1"))
@@ -166,36 +166,33 @@
 #' ## ####################################### 
 #' ## Without Screening and Collapsing
 #' ## ####################################### 
-#' ## only AMEs 
+#' #################### only AMEs ####################
 #' fit1 <- CausalANOVA(formula=won ~ newRecordF + promise + coeth_voting + relevantdegree,
 #'                     data=Carlson, pair.id=Carlson$contestresp, diff=TRUE,
-#' 		    cluster=Carlson$respcodeS, nway=1)
+#'                     cluster=Carlson$respcodeS, nway=1)
 #' summary(fit1)
-#' # plot(fit1)
+#' plot(fit1)
 #' 
-#' ## AMEs and two-way AMIEs 
+#' #################### AMEs and two-way AMIEs ####################
 #' fit2 <- CausalANOVA(formula=won ~ newRecordF + promise + coeth_voting + relevantdegree,
 #'                     int2.formula = ~ newRecordF:coeth_voting,
-#' 		    data=Carlson, pair.id=Carlson$contestresp,diff=TRUE,
-#' 		    cluster=Carlson$respcodeS, nway=2)
+#'                     data=Carlson, pair.id=Carlson$contestresp,diff=TRUE,
+#'                     cluster=Carlson$respcodeS, nway=2)
 #' summary(fit2)
-#' plot(fit2)
 #' plot(fit2, type="ConditionalEffect", fac.name=c("newRecordF","coeth_voting"))
 #' ConditionalEffect(fit2, treat.fac="newRecordF", cond.fac="coeth_voting")
 #' 
 #' \dontrun{
-#' ## AMEs and two-way and three-way AMIEs
+#' #################### AMEs and two-way and three-way AMIEs ####################
 #' ## Note: All pairs within thee-way interactions should show up in int2.formula (Strong Hierarchy).
 #' fit3 <- CausalANOVA(formula=won ~ newRecordF + promise + coeth_voting + relevantdegree,
 #'                     int2.formula = ~ newRecordF:promise + newRecordF:coeth_voting
-#' 		                         + promise:coeth_voting,
-#' 		    int3.formula = ~ newRecordF:promise:coeth_voting,
-#' 		    data=Carlson, pair.id=Carlson$contestresp,diff=TRUE,
-#' 		    cluster=Carlson$respcodeS, nway=3)
+#'                                        + promise:coeth_voting,
+#'                     int3.formula = ~ newRecordF:promise:coeth_voting,
+#'                     data=Carlson, pair.id=Carlson$contestresp,diff=TRUE,
+#'                     cluster=Carlson$respcodeS, nway=3)
 #' summary(fit3)
-#' plot(fit3)
 #' plot(fit3, type="AMIE", fac.name=c("newRecordF","promise", "coeth_voting"),space=25,adj.p=2.2)
-#' ConditionalEffect(fit3, treat.fac="newRecordF", cond.fac="coeth_voting")
 #' }
 #' 
 #' ## ####################################### 
@@ -206,25 +203,12 @@
 #' test.ind <- setdiff(unique(Carlson$respcodeS), train.ind)
 #' Carlson.train <- Carlson[is.element(Carlson$respcodeS,train.ind), ]
 #' Carlson.test <- Carlson[is.element(Carlson$respcodeS,test.ind), ]
-#' 
-#' ## only AMEs (Note: when nway=1, there is no factor interaction, so screen=FALSE).
-#' fit.r1 <- CausalANOVA(formula=won ~ newRecordF + promise + coeth_voting + relevantdegree,
-#'                       data=Carlson.train, pair.id=Carlson.train$contestresp, diff=TRUE,
-#' 		      collapse=TRUE,
-#' 		      cluster=Carlson.train$respcodeS, nway=1)
-#' summary(fit.r1)
-#' 
-#' ## refit with test.CausalANOVA
-#' fit.r1.new <- test.CausalANOVA(fit.r1, newdata=Carlson.test, diff=TRUE,
-#'                                pair.id=Carlson.test$contestresp, cluster=Carlson.test$respcodeS)
-#' summary(fit.r1.new)
-#' plot(fit.r1.new)
-#' 
-#' ## AMEs and two-way AMIEs 
+#'  
+#' #################### AMEs and two-way AMIEs ####################
 #' fit.r2 <- CausalANOVA(formula=won ~ newRecordF + promise + coeth_voting + relevantdegree,
 #'                       data=Carlson.train, pair.id=Carlson.train$contestresp,diff=TRUE,
-#' 		      screen=TRUE, collapse=TRUE,
-#' 		      cluster=Carlson.train$respcodeS, nway=2)
+#'                       screen=TRUE, collapse=TRUE,
+#'                       cluster=Carlson.train$respcodeS, nway=2)
 #' summary(fit.r2)
 #' 
 #' ## refit with test.CausalANOVA
@@ -235,22 +219,6 @@
 #' plot(fit.r2.new)
 #' plot(fit.r2.new, type="ConditionalEffect", fac.name=c("newRecordF","coeth_voting"))
 #' ConditionalEffect(fit.r2.new, treat.fac="newRecordF", cond.fac="coeth_voting")
-#' 
-#' \dontrun{
-#' ## AMEs and two-way and three-way AMIEs
-#' fit.r3 <- CausalANOVA(formula=won ~ newRecordF + promise + coeth_voting + relevantdegree,
-#'                       data=Carlson, pair.id=Carlson$contestresp,diff=TRUE,
-#' 		      screen=TRUE, collapse=TRUE,
-#' 		      cluster=Carlson$respcodeS, nway=3)
-#' summary(fit.r3)
-#' 
-#' ## refit with test.CausalANOVA
-#' fit.r3.new <- test.CausalANOVA(fit.r3, newdata=Carlson.test, diff=TRUE,
-#'                                pair.id=Carlson.test$contestresp, cluster=Carlson.test$respcodeS)
-#' 
-#' summary(fit.r3.new)
-#' ConditionalEffect(fit.r3.new, treat.fac="newRecordF", cond.fac="coeth_voting")
-#' }
 #' 
 CausalANOVA <- function(formula, int2.formula=NULL, int3.formula=NULL,
                         data, nway=1,
@@ -377,7 +345,7 @@ CausalANOVA <- function(formula, int2.formula=NULL, int3.formula=NULL,
     fit <- c(fit, main.formula=main.formula, int2.formula=int2.formula, int3.formula=int3.formula)
     
     if(select.prob==TRUE){
-        stab.fit <- stab.CausalANOVA(fit,cluster=cluster,boot=boot)
+        stab.fit <- stab.CausalANOVA(fit,cluster=cluster,boot=boot,seed=seed)
         output <- list("fit"=fit, "stab.fit"=stab.fit)
         class(output) <- c("CausalANOVA","stab","list")
     }else{

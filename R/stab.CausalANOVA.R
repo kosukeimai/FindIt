@@ -103,7 +103,7 @@ stab.CausalANOVA <- function(object,cluster=NULL,boot=500,seed=1234){
         sum.gash <- rangeCausalANOVAFit(gash.stab,verbose=FALSE)
         range.stab.v <- cbind(range.stab.v,sum.gash$range)
         AME.stab.v <- cbind(AME.stab.v, sum.gash$AME)
-        ## AMIE.stab.v <- cbind(AMIE.stab.v, sum.gash$AMIE)
+        AMIE.stab.v <- cbind(AMIE.stab.v, sum.gash$AMIE)
         
         if(i %% 50 ==0){
             print(paste(round(i*(100/boot)),"% done.",sep=""))
@@ -114,35 +114,37 @@ stab.CausalANOVA <- function(object,cluster=NULL,boot=500,seed=1234){
     StabBase <- rangeCausalANOVAFit(object,verbose=FALSE)
     ## Stability
     ## Range
+    ## set to 0 if it is smaller than "eps"
     digit <- nchar(eps) - 1
     range.stab <- cbind(round(StabBase$range,digits=digit),
                         apply(apply(sign(round(range.stab.v,digits=digit)),
                                     2,function(x) x==1),1,mean))
     colnames(range.stab) <- c("Range","stability")
 
-
     ## ## AMIE (not available)
-    ## AMIE.main <- StabBase$AMIE
+    AMIE.main <- StabBase$AMIE
     ## AMIE.stab <- cbind(round(StabBase$AMIE,digits=digit),
     ##                    apply(apply(sign(round(AMIE.stab.v,digits=digit)),2,
     ##                                function(x) x==sign(round(AMIE.main,digits=digit))),1,mean))
     ## stab.t2 <- AMIE.stab[round(AMIE.main,digits=digit)==0,2]
     ## AMIE.stab[round(AMIE.main,digits=digit)==0,2] <- 1 - stab.t2
-    ## colnames(AMIE.stab) <- c("AMIE", "stability") 
+    AMIE.stab <- cbind(AMIE.main, apply(abs(AMIE.stab.v) > eps*10, 1, mean))
+    colnames(AMIE.stab) <- c("AMIE", "stability") 
 
     ## AME
     AME.main <- StabBase$AME
-    AME.stab <- cbind(round(StabBase$AME,digits=digit),
-                      apply(apply(sign(round(AME.stab.v,digits=digit)),2,
-                                  function(x) x==sign(round(AME.main,digits=digit))),1,mean))
-    stab.t <- AME.stab[round(AME.main,digits=digit)==0,2]
-    AME.stab[round(AME.main,digits=digit)==0,2] <- 1 - stab.t
-    colnames(AME.stab) <- c("AME",
-                            "stability") 
+    ## AME.stab <- cbind(round(StabBase$AME,digits=digit),
+    ##                   apply(apply(sign(round(AME.stab.v,digits=digit)),2,
+    ##                               function(x) x==sign(round(AME.main,digits=digit))),1,mean))
+    ## stab.t <- AME.stab[round(AME.main,digits=digit)==0,2]
+    ## AME.stab[round(AME.main,digits=digit)==0,2] <- 1 - stab.t
+    AME.stab <- cbind(AME.main, apply(abs(AME.stab.v) > eps*10, 1, mean))
+    colnames(AME.stab) <- c("AME", "stability") 
     
-    output <- list("range.stab"=range.stab,"AME.stab"=AME.stab,
+    output <- list("range.stab"=range.stab,
+                   "AME.stab"=AME.stab, "AMIE.stab"=AMIE.stab,
                    "coef.stab.v"=coef.stab.v,
                    "range.stab.v"=range.stab.v,
-                   "AME.stab.v"=AME.stab.v)    
+                   "AME.stab.v"=AME.stab.v,"AMIE.stab.v"=AMIE.stab.v)    
 }
     
