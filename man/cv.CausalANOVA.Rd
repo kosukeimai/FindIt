@@ -7,7 +7,7 @@
 \usage{
 cv.CausalANOVA(formula, int2.formula = NULL, int3.formula = NULL, data,
   nway = 1, pair.id = NULL, diff = FALSE, cv.collapse.cost = c(0.1, 0.3,
-  0.7), nfolds = 5, screen = TRUE, screen.type = "fixed",
+  0.7), nfolds = 5, screen = FALSE, screen.type = "fixed",
   screen.num.int = 3, family = "binomial", cluster = NULL, maxIter = 50,
   eps = 1e-05, seed = 1234, fac.level = NULL, ord.fac = NULL,
   verbose = TRUE)
@@ -29,7 +29,7 @@ typically the environment from which 'CausalANOVA' is called.}
 \item{nway}{With \code{nway=1}, the function estimates the Average Marginal
 Effects (AMEs) only.  With \code{nway=2}, the function estimates the AMEs
 and the two-way Average Marginal Interaction Effects (AMIEs).  With
-\code{nway=3}, the function estiamtes the AMEs, the two-way and three-way
+\code{nway=3}, the function estimates the AMEs, the two-way and three-way
 AMIEs. Default is 1.}
 
 \item{pair.id}{(optional).Unique identifiers for each pair of comparison.
@@ -68,7 +68,7 @@ minimum cv error.}
 select. This option is used when and \code{screen=TRUE} and
 \code{screen.type="fixed"}. Default is 3.}
 
-\item{family}{A family of outcome varialbes. \code{"gaussian"} when
+\item{family}{A family of outcome variables. \code{"gaussian"} when
 continuous outcomes \code{"binomial"} when binary outcomes.  Default is
 \code{"binomial"}.}
 
@@ -100,7 +100,7 @@ the differences based on every pairwise comparison.}
 \value{
 \item{cv.error}{The mean cross-validated error - a vector of length
 \code{length(cv.t)}.} \item{cv.min}{A value of \code{t} that gives minimum
-\code{cv.missclass}.} \item{cv.1sd}{The largest value of \code{t} such that
+\code{cv.missclass}.} \item{cv.1Std}{The largest value of \code{t} such that
 error is within 1 standard error of the minimum.} \item{cv.each.mat}{A
 matrix containing cross-validation errors for each fold and cost parameter.}
 \item{cv.cost}{The \code{cv.collapse.cost} used in the function.}
@@ -123,9 +123,34 @@ Egami, Naoki and Kosuke Imai. 2016+. ``Causal Interaction in Factorial
 Experiments: Application to Conjoint Analysis.'' Working paper.
 \url{http://imai.princeton.edu/research/files/int.pdf}
 }
+\examples{
+
+data(Carlson)
+## Specify the order of each factor
+Carlson$newRecordF<- factor(Carlson$newRecordF,ordered=TRUE,
+                         levels=c("YesLC", "YesDis","YesMP",
+                             "noLC","noDis","noMP","noBusi"))
+Carlson$promise <- factor(Carlson$promise,ordered=TRUE,levels=c("jobs","clinic","education"))
+Carlson$coeth_voting <- factor(Carlson$coeth_voting,ordered=FALSE,levels=c("0","1"))
+Carlson$relevantdegree <- factor(Carlson$relevantdegree,ordered=FALSE,levels=c("0","1"))
+
+## ####################################### 
+## Collapsing Without Screening
+## ####################################### 
+#################### AMEs and two-way AMIEs ####################
+## We show a very small example for illustration.
+## Recommended to use cv.collapse.cost=c(0.1,0.3,0.5) and nfolds=10 in practice.
+fit.cv <- cv.CausalANOVA(formula=won ~ newRecordF + promise + coeth_voting + relevantdegree,
+                         int2.formula = ~ newRecordF:coeth_voting,
+                         data=Carlson, pair.id=Carlson$contestresp,diff=TRUE,
+                         cv.collapse.cost=c(0.1,0.3), nfolds=2,
+                         cluster=Carlson$respcodeS, nway=2)
+fit.cv
+}
 \seealso{
 \link{CausalANOVA}.
 }
 \author{
 Naoki Egami and Kosuke Imai.
 }
+

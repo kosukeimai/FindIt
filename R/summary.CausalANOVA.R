@@ -248,5 +248,5 @@ summary.CausalANOVA <-function(object, digit=4, verbose=TRUE,verbose.full=TRUE, 
         }
         
     }    
-    output <- list("range"=range,"range.name"=Name,"AME"=AME.table.pr, "AMIE2"=AMIE2.table.pr,"AMIE3"=AMIE3.table.pr)
+    output <- list("range"=Range.pr,"range.name"=Name,"AME"=AME.table.pr, "AMIE2"=AMIE2.table.pr,"AMIE3"=AMIE3.table.pr)
 }

@@ -6,7 +6,7 @@ rangeCausalANOVAFit <-function(object,verbose=TRUE,...){
     formula.orig <- object$formula.orig
     cost <- object$cost
     n.fac <- length(object$fac.level)
-    terms.f <- terms(formula)
+    terms.f <- terms(formula, data=data)
     order.f <- attr(terms.f, "order")
     Name <- attr(terms.f, "term.labels")
     
