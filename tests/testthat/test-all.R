@@ -3,7 +3,6 @@ library(FindIt)
 library(testthat)
 context("tests FindIt")
 
-
 test_that("tests FindIt on CausalANOVA", {
   # set random seed
   set.seed(12345)
