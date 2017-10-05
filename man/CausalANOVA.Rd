@@ -7,12 +7,12 @@
 \title{Estimating the AMEs and AMIEs with the CausalANOVA.}
 \usage{
 CausalANOVA(formula, int2.formula = NULL, int3.formula = NULL, data,
-  nway = 1, pair.id = NULL, diff = FALSE, screen = FALSE,
-  screen.type = "fixed", screen.num.int = 3, collapse = FALSE,
-  collapse.type = "fixed", collapse.cost = 0.3, family = "binomial",
-  cluster = NULL, maxIter = 50, eps = 1e-05, fac.level = NULL,
-  ord.fac = NULL, select.prob = FALSE, boot = 100, seed = 1234,
-  verbose = TRUE)
+            nway = 1, pair.id = NULL, diff = FALSE, screen = FALSE,
+            screen.type = "fixed", screen.num.int = 3, collapse = FALSE,
+            collapse.type = "fixed", collapse.cost = 0.3, family = "binomial",
+            cluster = NULL, maxIter = 50, eps = 1e-05, fac.level = NULL,
+            ord.fac = NULL, select.prob = FALSE, boot = 100, seed = 1234,
+            verbose = TRUE)
 }
 \arguments{
 \item{formula}{A formula that specifies outcome and treatment variables.}
@@ -186,8 +186,8 @@ function. }
 data(Carlson)
 ## Specify the order of each factor
 Carlson$newRecordF<- factor(Carlson$newRecordF,ordered=TRUE,
-                            levels=c("YesLC", "YesDis","YesMP",
-                                     "noLC","noDis","noMP","noBusi"))
+                         levels=c("YesLC", "YesDis","YesMP",
+                             "noLC","noDis","noMP","noBusi"))
 Carlson$promise <- factor(Carlson$promise,ordered=TRUE,levels=c("jobs","clinic","education"))
 Carlson$coeth_voting <- factor(Carlson$coeth_voting,ordered=FALSE,levels=c("0","1"))
 Carlson$relevantdegree <- factor(Carlson$relevantdegree,ordered=FALSE,levels=c("0","1"))
@@ -208,6 +208,7 @@ fit2 <- CausalANOVA(formula=won ~ newRecordF + promise + coeth_voting + relevant
                     data=Carlson, pair.id=Carlson$contestresp,diff=TRUE,
                     cluster=Carlson$respcodeS, nway=2)
 summary(fit2)
+plot(fit2)
 plot(fit2, type="ConditionalEffect", fac.name=c("newRecordF","coeth_voting"))
 ConditionalEffect(fit2, treat.fac="newRecordF", cond.fac="coeth_voting")
 
@@ -227,12 +228,12 @@ plot(fit3, type="AMIE", fac.name=c("newRecordF","promise", "coeth_voting"),space
 ## ####################################### 
 ## With Screening and Collapsing
 ## #######################################
-## Sample Splitting
+########## Sample Splitting ##########
 train.ind <- sample(unique(Carlson$respcodeS), 272, replace=FALSE)
 test.ind <- setdiff(unique(Carlson$respcodeS), train.ind)
 Carlson.train <- Carlson[is.element(Carlson$respcodeS,train.ind), ]
 Carlson.test <- Carlson[is.element(Carlson$respcodeS,test.ind), ]
- 
+
 #################### AMEs and two-way AMIEs ####################
 fit.r2 <- CausalANOVA(formula=won ~ newRecordF + promise + coeth_voting + relevantdegree,
                       data=Carlson.train, pair.id=Carlson.train$contestresp,diff=TRUE,

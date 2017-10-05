@@ -114,13 +114,22 @@ function internally when defaults when \code{collapse.type=cv.min} or
 \details{
 See Details in \code{CausalANOVA}.
 }
+\references{
+Post, J. B. and Bondell, H. D. 2013. ``Factor selection and
+structural identification in the interaction anova model.'' Biometrics 69,
+1, 70--79.
+
+Egami, Naoki and Kosuke Imai. 2016+. ``Causal Interaction in Factorial
+Experiments: Application to Conjoint Analysis.'' Working paper.
+\url{http://imai.princeton.edu/research/files/int.pdf}
+}
 \examples{
 
 data(Carlson)
 ## Specify the order of each factor
 Carlson$newRecordF<- factor(Carlson$newRecordF,ordered=TRUE,
-                            levels=c("YesLC", "YesDis","YesMP",
-                                     "noLC","noDis","noMP","noBusi"))
+                         levels=c("YesLC", "YesDis","YesMP",
+                             "noLC","noDis","noMP","noBusi"))
 Carlson$promise <- factor(Carlson$promise,ordered=TRUE,levels=c("jobs","clinic","education"))
 Carlson$coeth_voting <- factor(Carlson$coeth_voting,ordered=FALSE,levels=c("0","1"))
 Carlson$relevantdegree <- factor(Carlson$relevantdegree,ordered=FALSE,levels=c("0","1"))
@@ -137,16 +146,6 @@ fit.cv <- cv.CausalANOVA(formula=won ~ newRecordF + promise + coeth_voting + rel
                          cv.collapse.cost=c(0.1,0.3), nfolds=2,
                          cluster=Carlson$respcodeS, nway=2)
 fit.cv
-
-}
-\references{
-Post, J. B. and Bondell, H. D. 2013. ``Factor selection and
-structural identification in the interaction anova model.'' Biometrics 69,
-1, 70--79.
-
-Egami, Naoki and Kosuke Imai. 2016+. ``Causal Interaction in Factorial
-Experiments: Application to Conjoint Analysis.'' Working paper.
-\url{http://imai.princeton.edu/research/files/int.pdf}
 }
 \seealso{
 \link{CausalANOVA}.
@@ -154,3 +153,4 @@ Experiments: Application to Conjoint Analysis.'' Working paper.
 \author{
 Naoki Egami and Kosuke Imai.
 }
+
