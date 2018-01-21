@@ -13,6 +13,7 @@
 #' @param main the argument specifying the main title of the plot.
 #' @param xlab the argument specifying the name of x axis.
 #' @param ylab the argument specifying the name of y axis.
+#' @param interactive whether to make a plot interactive; default is FALSE.
 #' @param \dots further arguments passed to or from other methods.
 #' @return \item{plot}{Plot estimated treatment effects when
 #' \code{treat.type="single"} and predicted outcomes for each treatment
@@ -23,7 +24,7 @@
 #' ## See the help page for FindIt() for an example.
 #' 	
 #' 
-plot.PredictFindIt <- function(x,main,xlab,ylab, interactive=FALSE, ...){
+plot.PredictFindIt <- function(x,main,xlab, ylab, interactive=FALSE, ...){
     labels <- "index"
     if(missing(xlab)){
         xlab <- "index of observation"
