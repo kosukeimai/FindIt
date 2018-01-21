@@ -5,7 +5,7 @@
 \title{Plot estimated treatment effects or predicted outcomes for each treatment
 combination.}
 \usage{
-\method{plot}{PredictFindIt}(x, main, xlab, ylab, ...)
+\method{plot}{PredictFindIt}(x, main, xlab, ylab, interactive = FALSE, ...)
 }
 \arguments{
 \item{x}{output from \code{predict.FindIt}.}
@@ -15,6 +15,8 @@ combination.}
 \item{xlab}{the argument specifying the name of x axis.}
 
 \item{ylab}{the argument specifying the name of y axis.}
+
+\item{interactive}{whether to make a plot interactive; default is FALSE.}
 
 \item{\dots}{further arguments passed to or from other methods.}
 }

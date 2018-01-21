@@ -37,18 +37,6 @@ intervals after regularization with \code{CausalANOVA}function.
 \details{
 See Details in \code{CausalANOVA}.
 }
-\references{
-Egami, Naoki and Kosuke Imai. 2016+. ``Causal Interaction in
-Factorial Experiments: Application to Conjoint Analysis.'' Working paper.
-\url{http://imai.princeton.edu/research/files/int.pdf}
-
-Lim, M. and Hastie, T. 2015. Learning interactions via hierarchical
-group-lasso regularization. Journal of Computational and Graphical
-Statistics 24, 3, 627--654.
-
-Post, J. B. and Bondell, H. D. 2013. ``Factor selection and structural
-identification in the interaction anova model.'' Biometrics 69, 1, 70--79.
-}
 \examples{
 ## ####################################### 
 ## With Screening and Collapsing
@@ -57,16 +45,17 @@ data(Carlson)
 ## Specify the order of each factor
 Carlson$newRecordF<- factor(Carlson$newRecordF,ordered=TRUE,
                             levels=c("YesLC", "YesDis","YesMP",
-                            "noLC","noDis","noMP","noBusi"))
+                                     "noLC","noDis","noMP","noBusi"))
 Carlson$promise <- factor(Carlson$promise,ordered=TRUE,levels=c("jobs","clinic","education"))
 Carlson$coeth_voting <- factor(Carlson$coeth_voting,ordered=FALSE,levels=c("0","1"))
 Carlson$relevantdegree <- factor(Carlson$relevantdegree,ordered=FALSE,levels=c("0","1"))
-########## Sample Splitting ##########
+
+## Sample Splitting
 train.ind <- sample(unique(Carlson$respcodeS), 272, replace=FALSE)
 test.ind <- setdiff(unique(Carlson$respcodeS), train.ind)
 Carlson.train <- Carlson[is.element(Carlson$respcodeS,train.ind), ]
 Carlson.test <- Carlson[is.element(Carlson$respcodeS,test.ind), ]
-
+ 
 #################### AMEs and two-way AMIEs ####################
 fit.r2 <- CausalANOVA(formula=won ~ newRecordF + promise + coeth_voting + relevantdegree,
                       data=Carlson.train, pair.id=Carlson.train$contestresp,diff=TRUE,
@@ -82,6 +71,18 @@ summary(fit.r2.new)
 plot(fit.r2.new)
 plot(fit.r2.new, type="ConditionalEffect", fac.name=c("newRecordF","coeth_voting"))
 ConditionalEffect(fit.r2.new, treat.fac="newRecordF", cond.fac="coeth_voting")
+}
+\references{
+Egami, Naoki and Kosuke Imai. 2016+. ``Causal Interaction in
+Factorial Experiments: Application to Conjoint Analysis.'' Working paper.
+\url{http://imai.princeton.edu/research/files/int.pdf}
+
+Lim, M. and Hastie, T. 2015. Learning interactions via hierarchical
+group-lasso regularization. Journal of Computational and Graphical
+Statistics 24, 3, 627--654.
+
+Post, J. B. and Bondell, H. D. 2013. ``Factor selection and structural
+identification in the interaction anova model.'' Biometrics 69, 1, 70--79.
 }
 \seealso{
 \link{CausalANOVA}.
