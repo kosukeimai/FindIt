@@ -23,7 +23,7 @@
 #' ## See the help page for FindIt() for an example.
 #' 	
 #' 
-plot.PredictFindIt <- function(x,main,xlab,ylab, ...){
+plot.PredictFindIt <- function(x,main,xlab,ylab, interactive=FALSE, ...){
     labels <- "index"
     if(missing(xlab)){
         xlab <- "index of observation"
@@ -52,16 +52,18 @@ plot.PredictFindIt <- function(x,main,xlab,ylab, ...){
         text(zero,low, labels=as.character(zero))
         abline(h=0,lty="dotdash")
         abline(h=ATE, col="blue")
-        abline(v=zero, col="grey")                                    
-        if(labels=="index"){
-            p <- try(identify(xp,pred.data.out.p$Treatment.effect,
-                              labels=rownames(pred.data.out.p)
-                              ),silent=TRUE)
-        }
-        else{
-            p <- try(identify(xp,pred.data.out.p$Treatment.effect,
-                              labels=pred.data.out.p[,labels]
-                              ),silent=TRUE)
+        abline(v=zero, col="grey") 
+        if(interactive ==TRUE){
+          if(labels=="index"){
+              p <- try(identify(xp,pred.data.out.p$Treatment.effect,
+                                labels=rownames(pred.data.out.p)
+                                ),silent=TRUE)
+          }
+          else{
+              p <- try(identify(xp,pred.data.out.p$Treatment.effect,
+                                labels=pred.data.out.p[,labels]
+                                ),silent=TRUE)
+          }
         }
     }
     if(treat.type=="multiple"){
@@ -85,17 +87,17 @@ plot.PredictFindIt <- function(x,main,xlab,ylab, ...){
         abline(h=0,lty="dotdash")
         abline(h=ATE, col="blue")
         abline(v=zero, col="grey")
-        
-        if(labels=="index"){
-            p <- try(identify(xp,pred.data.out.p$Treatment.effect,
-                              labels=rownames(pred.data.out.p)
-                              ),silent=TRUE)
-        }
-        else{
-            p <- try(identify(xp,pred.data.out.p$Treatment.effect,
-                              labels=pred.data.out.p[,labels]
-                              ),silent=TRUE)
+        if(interactive ==TRUE){
+          if(labels=="index"){
+              p <- try(identify(xp,pred.data.out.p$Treatment.effect,
+                                labels=rownames(pred.data.out.p)
+                                ),silent=TRUE)
+          }
+          else{
+              p <- try(identify(xp,pred.data.out.p$Treatment.effect,
+                                labels=pred.data.out.p[,labels]
+                                ),silent=TRUE)
+          }
         }
     }
-    
 }
