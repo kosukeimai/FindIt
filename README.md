@@ -1,4 +1,4 @@
-# R package FindIt [![Build Status](https://travis-ci.org/kosukeimai/FindIt.svg?branch=master)](https://travis-ci.org/kosukeimai/FindIt)  [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/FindIt)](https://cran.r-project.org/package=FindIt)
+# R package FindIt [![Build Status](https://travis-ci.org/kosukeimai/FindIt.svg?branch=master)](https://travis-ci.org/kosukeimai/FindIt)  [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/FindIt)](https://cran.r-project.org/package=FindIt) ![CRAN downloads](http://cranlogs.r-pkg.org/badges/grand-total/FindIt)
 
 ## FindIt: Finding Heterogeneous Treatment Effects
 
