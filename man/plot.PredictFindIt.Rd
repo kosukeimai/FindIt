@@ -5,7 +5,8 @@
 \title{Plot estimated treatment effects or predicted outcomes for each treatment
 combination.}
 \usage{
-\method{plot}{PredictFindIt}(x, main, xlab, ylab, interactive = FALSE, ...)
+\method{plot}{PredictFindIt}(x, main, xlab, ylab, interactive = FALSE,
+  ...)
 }
 \arguments{
 \item{x}{output from \code{predict.FindIt}.}

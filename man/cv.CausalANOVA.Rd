@@ -6,11 +6,11 @@
 \title{Cross validation for the CausalANOVA.}
 \usage{
 cv.CausalANOVA(formula, int2.formula = NULL, int3.formula = NULL, data,
-  nway = 1, pair.id = NULL, diff = FALSE, cv.collapse.cost = c(0.1, 0.3,
-  0.7), nfolds = 5, screen = FALSE, screen.type = "fixed",
-  screen.num.int = 3, family = "binomial", cluster = NULL, maxIter = 50,
-  eps = 1e-05, seed = 1234, fac.level = NULL, ord.fac = NULL,
-  verbose = TRUE)
+  nway = 1, pair.id = NULL, diff = FALSE, cv.collapse.cost = c(0.1,
+  0.3, 0.7), nfolds = 5, screen = FALSE, screen.type = "fixed",
+  screen.num.int = 3, family = "binomial", cluster = NULL,
+  maxIter = 50, eps = 1e-05, seed = 1234, fac.level = NULL,
+  ord.fac = NULL, verbose = TRUE)
 }
 \arguments{
 \item{formula}{a formula that specifies outcome and treatment variables.}

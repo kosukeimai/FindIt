@@ -4,8 +4,8 @@
 \alias{predict.FindIt}
 \title{Computing predicted values for each sample in the data.}
 \usage{
-\method{predict}{FindIt}(object, newdata, sort = TRUE, decreasing = TRUE,
-  wts = 1, unique = FALSE, ...)
+\method{predict}{FindIt}(object, newdata, sort = TRUE,
+  decreasing = TRUE, wts = 1, unique = FALSE, ...)
 }
 \arguments{
 \item{object}{An output object from \code{FindIt}.}

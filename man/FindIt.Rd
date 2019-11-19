@@ -5,11 +5,12 @@
 \alias{summary.FindIt}
 \title{FindIt for Estimating Heterogeneous Treatment Effects}
 \usage{
-FindIt(model.treat, model.main, model.int, data = NULL, type = "binary",
-  treat.type = "multiple", nway, search.lambdas = TRUE, lambdas = NULL,
-  make.twoway = TRUE, make.allway = TRUE, wts = 1, scale.c = 1,
-  scale.int = 1, fit.glmnet = TRUE, make.reference = TRUE,
-  reference.main = NULL, threshold = 0.999999)
+FindIt(model.treat, model.main, model.int, data = NULL,
+  type = "binary", treat.type = "multiple", nway,
+  search.lambdas = TRUE, lambdas = NULL, make.twoway = TRUE,
+  make.allway = TRUE, wts = 1, scale.c = 1, scale.int = 1,
+  fit.glmnet = TRUE, make.reference = TRUE, reference.main = NULL,
+  threshold = 0.999999)
 }
 \arguments{
 \item{model.treat}{A formula that specifies outcome and treatment variables.}

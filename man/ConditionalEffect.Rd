@@ -4,8 +4,8 @@
 \alias{ConditionalEffect}
 \title{Estimating the Conditional Effects with the CausalANOVA.}
 \usage{
-ConditionalEffect(object, treat.fac = NULL, cond.fac = NULL, base.ind = 1,
-  round = 3, inference = NULL, verbose = TRUE)
+ConditionalEffect(object, treat.fac = NULL, cond.fac = NULL,
+  base.ind = 1, round = 3, inference = NULL, verbose = TRUE)
 }
 \arguments{
 \item{object}{The output from \code{CausalANOAV} function.}
