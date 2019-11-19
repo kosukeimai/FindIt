@@ -68,7 +68,7 @@ makeallway<-function(X,threshold=0.999999,deletion=TRUE,
                 colnames(two.way.data[[j]]) <- name
             }
             if(sparse.use==TRUE){
-                two.way.data <- do.call(cBind,two.way.data)
+                two.way.data <- do.call("cbind",two.way.data)
             }else{
                 two.way.data <- as.data.frame(two.way.data)
             }
@@ -277,7 +277,7 @@ makeallway<-function(X,threshold=0.999999,deletion=TRUE,
     if(ncol(X)==1){FinalData <- one.way.data}
     if(matrix==1){
         if(sparse.use==TRUE){
-            if(ncol(X)>=2){FinalData <- cBind(one.way.data,two.way.data)}
+            if(ncol(X)>=2){FinalData <- cbind(one.way.data,two.way.data)}
         }else{
             if(ncol(X)>=2){FinalData <- cbind(one.way.data,two.way.data)}
         }

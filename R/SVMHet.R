@@ -229,16 +229,14 @@ FindIt <- function(model.treat, model.main,model.int,data=NULL,
 
     ## Check nway
     if(missing(nway) & treat.type=="multiple") {
-        print("Need to specify nway")
-        break
+        stop("Need to specify nway")
     }
     if(missing(nway) & treat.type=="single") {
         nway <- 2
     }
 
     if(sum(wts<0)>0) {
-        print("Only non-negative weights allowed")
-        break
+        stop("Only non-negative weights allowed")
     }
 
     ## Check whether the model has the main effect covariates or not. 
