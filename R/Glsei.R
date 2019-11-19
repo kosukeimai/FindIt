@@ -6,7 +6,7 @@
 ## ==============================================================
 
 Glsei <- function (A = NULL, B = NULL, E = NULL, F = NULL, G = NULL, H = NULL, 
-                   Wx = NULL, Wa = NULL, type = 1, tol = sqrt(.Machine$double.eps), 
+                   Wx = NULL, Wa = NULL, type = 2, tol = sqrt(.Machine$double.eps), 
                    tolrank = NULL, fulloutput = FALSE, verbose = TRUE) 
 {
   if (is.vector(E) & length(F) == 1) 
@@ -134,10 +134,5 @@ Glsei <- function (A = NULL, B = NULL, E = NULL, F = NULL, G = NULL, H = NULL,
   names(X) <- xnames
   res <- list(X = X, residualNorm = residual, solutionNorm = solution, 
               IsError = sol$IsError, type = "lsei")
-  if (fulloutput && type == 1) {
-    res$covar <- covar
-    res$RankEq <- sol$IP[1]
-    res$RankApp <- sol$IP[2]
-  }
   return(res)
 }

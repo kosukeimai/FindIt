@@ -1,8 +1,3 @@
-########################################
-## Naoki Egami
-## 2016/09/03
-########################################
-
 CreateCoef <- function(coef.use, Index.use, Fac.level.use, Gorder){
 
     OneANOVA <- function(Ovec){

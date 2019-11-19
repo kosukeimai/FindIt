@@ -1,3 +1,8 @@
+#' Summarizing FindIt output
+#' @param object An object from \code{FindIt}
+#' @param ... Other parameters
+#' @method summary FindIt
+#' @export
 summary.FindIt<-function(object,...){
     ## x <- summary.glm(object, dispersion = dispersion,
     ## correlation = correlation, symbolic.cor = symbolic.cor, ...)

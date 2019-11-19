@@ -1,4 +1,3 @@
-
 indTwo2Three <- function(indTwo, n.fac){
     Ad <- matrix(0, ncol=n.fac, nrow=n.fac)
     for(j in 1:ncol(indTwo)){

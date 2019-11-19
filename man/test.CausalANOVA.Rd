@@ -4,8 +4,14 @@
 \alias{test.CausalANOVA}
 \title{Estimating the AMEs and AMIEs after Regularization with the CausalANOVA.}
 \usage{
-test.CausalANOVA(fit, newdata, collapse.level = TRUE, diff = FALSE,
-  pair.id = NULL, cluster = NULL)
+test.CausalANOVA(
+  fit,
+  newdata,
+  collapse.level = TRUE,
+  diff = FALSE,
+  pair.id = NULL,
+  cluster = NULL
+)
 }
 \arguments{
 \item{fit}{The output from \code{CausalANOAV} function.}
@@ -73,9 +79,9 @@ plot(fit.r2.new, type="ConditionalEffect", fac.name=c("newRecordF","coeth_voting
 ConditionalEffect(fit.r2.new, treat.fac="newRecordF", cond.fac="coeth_voting")
 }
 \references{
-Egami, Naoki and Kosuke Imai. 2016+. ``Causal Interaction in
-Factorial Experiments: Application to Conjoint Analysis.'' Working paper.
-\url{http://imai.princeton.edu/research/files/int.pdf}
+Egami, Naoki and Kosuke Imai. 2019. Causal Interaction in
+Factorial Experiments: Application to Conjoint Analysis, Journal of the American Statistical Association.
+\url{http://imai.fas.harvard.edu/research/files/int.pdf}
 
 Lim, M. and Hastie, T. 2015. Learning interactions via hierarchical
 group-lasso regularization. Journal of Computational and Graphical

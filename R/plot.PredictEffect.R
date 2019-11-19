@@ -23,7 +23,7 @@
 #' 
 #' ## See the help page for FindIt() for an example.
 #' 	
-#' 
+#' @export
 plot.PredictFindIt <- function(x,main,xlab, ylab, interactive=FALSE, ...){
     labels <- "index"
     if(missing(xlab)){

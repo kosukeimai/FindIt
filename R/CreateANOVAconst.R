@@ -1,7 +1,3 @@
-##################################################
-## Naoki Egami
-## 2016/08/25
-##################################################
 CreateANOVAconst <- function(fac.level,ord.fac,Gorder,facCons, indTwo=NULL, indThree=NULL){
     ## Two-way Interactions
     TwoWayConst <- function(alevel,blevel,type="alpha"){

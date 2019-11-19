@@ -52,7 +52,6 @@
 #' \code{ConditionalEffect} function and visualize them using \code{plot}
 #' function. }
 #' 
-#' @aliases CausalANOVA summary.CausalANOVA plot.CausalANOVA
 #' @param formula A formula that specifies outcome and treatment variables.
 #' @param int2.formula (optional). A formula that specifies two-way
 #' interactions.
@@ -140,11 +139,22 @@
 #' baselines.} \item{AMIE3}{The estimated three-way AMIEs with the grand-mean
 #' as baselines.} \item{...}{arguments passed to the function or arguments only
 #' for the internal use.}
+#' @import limSolve
+#' @import arm
+#' @import quadprog
+#' @import glinternet
+#' @import sandwich
+#' @import lmtest
+#' @import Matrix
+#' @importFrom igraph triangles graph_from_adjacency_matrix components
+#' @importFrom graphics Axis abline arrows identify par plot segments text
+#' @importFrom stats as.formula coef cor delete.response lm model.frame model.matrix na.omit predict rnorm sd terms var vcov
+#' @importFrom utils combn
 #' @author Naoki Egami and Kosuke Imai.
 #' @seealso \link{cv.CausalANOVA}
-#' @references Egami, Naoki and Kosuke Imai. 2016+. Causal Interaction in
-#' Factorial Experiments: Application to Conjoint Analysis. Working paper.
-#' \url{http://imai.princeton.edu/research/files/int.pdf}
+#' @references Egami, Naoki and Kosuke Imai. 2019. Causal Interaction in
+#' Factorial Experiments: Application to Conjoint Analysis, Journal of the American Statistical Association.
+#' \url{http://imai.fas.harvard.edu/research/files/int.pdf}
 #' 
 #' Lim, M. and Hastie, T. 2015. Learning interactions via hierarchical
 #' group-lasso regularization. Journal of Computational and Graphical
@@ -220,6 +230,7 @@
 #' plot(fit.r2.new, type="ConditionalEffect", fac.name=c("newRecordF","coeth_voting"))
 #' ConditionalEffect(fit.r2.new, treat.fac="newRecordF", cond.fac="coeth_voting")
 #' 
+#' @export
 CausalANOVA <- function(formula, int2.formula=NULL, int3.formula=NULL,
                         data, nway=1,
                         pair.id=NULL, diff=FALSE,

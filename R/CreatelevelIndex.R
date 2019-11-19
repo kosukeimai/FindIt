@@ -1,11 +1,3 @@
-##################################################
-## Naoki Egami
-## 2016/08/22
-## Updated on 2017/07/20
-##################################################
-
-
-## Global function: (it does change depending on the formula)
 CreatelevelIndex <- function(fac.level,ord.fac, indTwo=NULL, indThree=NULL, Gorder){
     if(missing(Gorder)){
         Gorder <- 3 
@@ -99,5 +91,3 @@ CreatelevelIndex <- function(fac.level,ord.fac, indTwo=NULL, indThree=NULL, Gord
     
     return(Index.Mat)
 }
-
-

@@ -1,7 +1,3 @@
-##################################################
-## Naoki Egami
-## 2016/08/22
-##################################################
 lengthSlack <- function(fac.level,ord.fac,Gorder=2, facCons=FALSE){
     ## This does not depend on Gorder.
     if(facCons==FALSE){

@@ -1,8 +1,4 @@
-########################################
-## plot.cv.GashANOVA.R
-## 2016/11/27
-## Naoki Egami
-########################################
+#' @export
 plot.cv.CausalANOVA <- function(x,main=NULL,xlab=NULL,ylab=NULL,...){
     object <- x
     rm(x)

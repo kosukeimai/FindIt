@@ -1,7 +1,3 @@
-##################################################
-## Naoki Egami
-## 2016/08/22
-##################################################
 PsyConstraintCombine <- function(fac.level,ord.fac, Gorder, indTwo=NULL, indThree=NULL){
 
     PsyIJfunction <- function(i,j,type.ind,plus,fac.level,ord.fac,Gorder, indTwo, indThree){
@@ -176,9 +172,3 @@ PsyConstraintCombine <- function(fac.level,ord.fac, Gorder, indTwo=NULL, indThre
     }
     return(PsyConstraintF)
 }
-
-
-
-
-
-

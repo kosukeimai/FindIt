@@ -1,4 +1,12 @@
-summary.CausalANOVA <-function(object, digit=4, verbose=TRUE,verbose.full=TRUE, ...){
+#' Summarizing CausalANOVA output
+#' @param object An object from \code{CausalANOVA}
+#' @param digit the number of digits
+#' @param verbose report additional summary results
+#' @param verbose.full report full summary results
+#' @param ... Other parameters
+#' @method summary CausalANOVA
+#' @export
+summary.CausalANOVA <-function(object, digit=4, verbose=TRUE, verbose.full=TRUE, ...){
 
     if(class(object)[2]=="stab"){
         fit <- object$fit

@@ -19,7 +19,7 @@ Data from Carlson (2015).
 \description{
 This data set gives the outcomes a well as treatment assignments of the
 conjoint analysis in Carlson (2015). Please Carlson (2015) and Egami and
-Imai (2016+) for more details.
+Imai (2019) for more details.
 }
 \references{
 Carlson, E. 2015. ``Ethnic voting and accountability in africa:

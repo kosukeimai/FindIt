@@ -21,9 +21,9 @@
 #' @return \item{fit}{The output of class \code{CausalANOVA}.}
 #' @author Naoki Egami and Kosuke Imai.
 #' @seealso \link{CausalANOVA}.
-#' @references Egami, Naoki and Kosuke Imai. 2016+. ``Causal Interaction in
-#' Factorial Experiments: Application to Conjoint Analysis.'' Working paper.
-#' \url{http://imai.princeton.edu/research/files/int.pdf}
+#' @references Egami, Naoki and Kosuke Imai. 2019. Causal Interaction in
+#' Factorial Experiments: Application to Conjoint Analysis, Journal of the American Statistical Association.
+#' \url{http://imai.fas.harvard.edu/research/files/int.pdf}
 #' 
 #' Lim, M. and Hastie, T. 2015. Learning interactions via hierarchical
 #' group-lasso regularization. Journal of Computational and Graphical
@@ -65,7 +65,7 @@
 #' plot(fit.r2.new)
 #' plot(fit.r2.new, type="ConditionalEffect", fac.name=c("newRecordF","coeth_voting"))
 #' ConditionalEffect(fit.r2.new, treat.fac="newRecordF", cond.fac="coeth_voting")
-
+#' @export
 test.CausalANOVA <- function(fit, newdata, collapse.level=TRUE, diff=FALSE, pair.id=NULL,cluster=NULL){
     ## I need to install newdata as well as new information about pair.id
     

@@ -2,15 +2,28 @@
 % Please edit documentation in R/SVMHet.R
 \name{FindIt}
 \alias{FindIt}
-\alias{summary.FindIt}
 \title{FindIt for Estimating Heterogeneous Treatment Effects}
 \usage{
-FindIt(model.treat, model.main, model.int, data = NULL,
-  type = "binary", treat.type = "multiple", nway,
-  search.lambdas = TRUE, lambdas = NULL, make.twoway = TRUE,
-  make.allway = TRUE, wts = 1, scale.c = 1, scale.int = 1,
-  fit.glmnet = TRUE, make.reference = TRUE, reference.main = NULL,
-  threshold = 0.999999)
+FindIt(
+  model.treat,
+  model.main,
+  model.int,
+  data = NULL,
+  type = "binary",
+  treat.type = "multiple",
+  nway,
+  search.lambdas = TRUE,
+  lambdas = NULL,
+  make.twoway = TRUE,
+  make.allway = TRUE,
+  wts = 1,
+  scale.c = 1,
+  scale.int = 1,
+  fit.glmnet = TRUE,
+  make.reference = TRUE,
+  reference.main = NULL,
+  threshold = 0.999999
+)
 }
 \arguments{
 \item{model.treat}{A formula that specifies outcome and treatment variables.}
@@ -205,11 +218,11 @@ plot(pred2)
 Imai, Kosuke and Marc Ratkovic. 2013.  ``Estimating Treatment
 Effect Heterogeneity in Randomized Program Evaluation.'' Annals of Applied
 Statistics, Vol.7, No.1(March), pp. 443-470.
-\url{http://imai.princeton.edu/research/files/svm.pdf}
+\url{http://imai.fas.harvard.edu/research/files/svm.pdf}
 
-Egami, Naoki and Kosuke Imai. 2015. ``Causal Interaction in
-High-Dimension.'' Working paper.
-\url{http://imai.princeton.edu/research/files/int.pdf}
+Egami, Naoki and Kosuke Imai. 2019. Causal Interaction in 
+Factorial Experiments: Application to Conjoint Analysis, Journal of the American Statistical Association.
+\url{http://imai.fas.harvard.edu/research/files/int.pdf}
 }
 \author{
 Naoki Egami, Marc Ratkovic and Kosuke Imai.
