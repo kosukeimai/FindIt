@@ -33,3 +33,5 @@ vignettes/*.pdf
 *.knit.md
 .DS_Store
 .Rproj.user
+
+example
