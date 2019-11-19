@@ -1,11 +1,3 @@
-########################################
-## Naoki Egami
-## 2017/08/02
-########################################
-
-## Index to Index Function 
-
-
 ## output: numbers and matrix with 1 
 IndexOne <- function(index, n.level){
     index.u <- list()
@@ -250,5 +242,3 @@ FullVCOV <- function(vcov, fac.level, ord.fac, indTwo, indThree, Gorder=Gorder){
 
     return(vcov.out)
 }
-
-

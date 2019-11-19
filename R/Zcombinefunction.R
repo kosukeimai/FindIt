@@ -1,8 +1,3 @@
-##################################################
-## Naoki Egami
-## 2016/08/22
-##################################################
-
 ## Even for three-way interaction models, I can exactly the same funciton
 ## for Zonefunction, Ztwofunction
 
@@ -109,4 +104,3 @@ Zcombinefunction <- function(X,fac.level,ord.fac,Gorder,
     
     return(Zcombine)
 }
-

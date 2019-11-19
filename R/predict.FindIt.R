@@ -27,7 +27,7 @@
 #' 
 #' ## See the help page for FindIt() for an example.
 #' 	
-#' 
+#' @export
 predict.FindIt <- function (object, newdata, sort = TRUE, decreasing = TRUE, wts = 1, 
                             unique = FALSE, ...) 
 {

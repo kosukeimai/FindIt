@@ -1,10 +1,3 @@
-########################################
-## cv.GashANOVA.R
-## 2016/11/27
-## Naoki Egami
-########################################
-
-
 #' Cross validation for the CausalANOVA.
 #' 
 #' \code{cv.CausalANOVA} implements cross-validation for \code{CausalANOVA} to
@@ -91,9 +84,9 @@
 #' structural identification in the interaction anova model.'' Biometrics 69,
 #' 1, 70--79.
 #' 
-#' Egami, Naoki and Kosuke Imai. 2016+. ``Causal Interaction in Factorial
-#' Experiments: Application to Conjoint Analysis.'' Working paper.
-#' \url{http://imai.princeton.edu/research/files/int.pdf}
+#' Egami, Naoki and Kosuke Imai. 2019. Causal Interaction in
+#' Factorial Experiments: Application to Conjoint Analysis, Journal of the American Statistical Association.
+#' \url{http://imai.fas.harvard.edu/research/files/int.pdf}
 #' @examples
 #' 
 #' data(Carlson)
@@ -118,7 +111,7 @@
 #'                          cluster=Carlson$respcodeS, nway=2)
 #' fit.cv
 #' 
-
+#' @export
 cv.CausalANOVA <- function(formula, int2.formula=NULL, int3.formula=NULL,
                            data, nway=1, pair.id=NULL, diff=FALSE,
                            cv.collapse.cost=c(0.1,0.3,0.7), nfolds=5,

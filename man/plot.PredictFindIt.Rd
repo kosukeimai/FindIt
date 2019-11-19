@@ -5,8 +5,7 @@
 \title{Plot estimated treatment effects or predicted outcomes for each treatment
 combination.}
 \usage{
-\method{plot}{PredictFindIt}(x, main, xlab, ylab, interactive = FALSE,
-  ...)
+\method{plot}{PredictFindIt}(x, main, xlab, ylab, interactive = FALSE, ...)
 }
 \arguments{
 \item{x}{output from \code{predict.FindIt}.}
@@ -40,7 +39,6 @@ predicted outcomes for each treatment combination when
 
 ## See the help page for FindIt() for an example.
 	
-
 }
 \author{
 Naoki Egami, Marc Ratkovic and Kosuke Imai.

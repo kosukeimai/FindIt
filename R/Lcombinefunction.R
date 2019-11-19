@@ -1,9 +1,3 @@
-##################################################
-## Naoki Egami
-## 2016/08/22
-##################################################
-
-
 Lcombinefunction <- function(fac.level,ord.fac,facCons,Gorder=3, indTwo=NULL, indThree=NULL){
 
     ## Make the difference in three-way interactions
@@ -322,4 +316,3 @@ Lcombinefunction <- function(fac.level,ord.fac,facCons,Gorder=3, indTwo=NULL, in
 
     return(L)
 }
-

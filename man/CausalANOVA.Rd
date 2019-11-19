@@ -2,17 +2,33 @@
 % Please edit documentation in R/CausalANOVA.R
 \name{CausalANOVA}
 \alias{CausalANOVA}
-\alias{summary.CausalANOVA}
-\alias{plot.CausalANOVA}
 \title{Estimating the AMEs and AMIEs with the CausalANOVA.}
 \usage{
-CausalANOVA(formula, int2.formula = NULL, int3.formula = NULL, data,
-  nway = 1, pair.id = NULL, diff = FALSE, screen = FALSE,
-  screen.type = "fixed", screen.num.int = 3, collapse = FALSE,
-  collapse.type = "fixed", collapse.cost = 0.3, family = "binomial",
-  cluster = NULL, maxIter = 50, eps = 1e-05, fac.level = NULL,
-  ord.fac = NULL, select.prob = FALSE, boot = 100, seed = 1234,
-  verbose = TRUE)
+CausalANOVA(
+  formula,
+  int2.formula = NULL,
+  int3.formula = NULL,
+  data,
+  nway = 1,
+  pair.id = NULL,
+  diff = FALSE,
+  screen = FALSE,
+  screen.type = "fixed",
+  screen.num.int = 3,
+  collapse = FALSE,
+  collapse.type = "fixed",
+  collapse.cost = 0.3,
+  family = "binomial",
+  cluster = NULL,
+  maxIter = 50,
+  eps = 1e-05,
+  fac.level = NULL,
+  ord.fac = NULL,
+  select.prob = FALSE,
+  boot = 100,
+  seed = 1234,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{formula}{A formula that specifies outcome and treatment variables.}
@@ -251,9 +267,9 @@ ConditionalEffect(fit.r2.new, treat.fac="newRecordF", cond.fac="coeth_voting")
 
 }
 \references{
-Egami, Naoki and Kosuke Imai. 2016+. Causal Interaction in
-Factorial Experiments: Application to Conjoint Analysis. Working paper.
-\url{http://imai.princeton.edu/research/files/int.pdf}
+Egami, Naoki and Kosuke Imai. 2019. Causal Interaction in
+Factorial Experiments: Application to Conjoint Analysis, Journal of the American Statistical Association.
+\url{http://imai.fas.harvard.edu/research/files/int.pdf}
 
 Lim, M. and Hastie, T. 2015. Learning interactions via hierarchical
 group-lasso regularization. Journal of Computational and Graphical

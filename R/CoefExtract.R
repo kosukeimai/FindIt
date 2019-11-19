@@ -1,7 +1,3 @@
-########################################
-## Naoki Egami
-######################################## 
-
 CoefExtract <- function(BaseCoef, base.name, fac.level, ord.fac, Gorder, indTwo=NULL, indThree=NULL){
     ## input: BaseCoef
     ## I need to remove intercept first 

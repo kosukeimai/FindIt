@@ -1,10 +1,19 @@
+#' Plotting CausalANOVA
+#' @param x An output from \code{CausalANOVA}
+#' @param fac.name Factor names to plot. Length should be 2.
+#' @param treat.ind Which factor serves as the main treatment. Should be 1 (the first element of \code{fac.name}) or 2 (the second element of \code{fac.name}).
+#' @param type What types of effects to plot. Should be one of \code{AME}, \code{AMIE} and \code{ConditionalEffect}.
+#' @param space Space on the left side of the plot. 
+#' @param xlim Range for the x-axis
+#' @param ... Other graphical parameters
+#' @export
 plot.CausalANOVA <- function(x, fac.name,
                              treat.ind=1,
-                             type="ConditionalEffect",
-                             main=NULL, space=15, adj.p=2.3,
-                             add=FALSE, col="black",
-                             xlim, ...){
-    
+                             type = "ConditionalEffect", space = 15, xlim, ...){
+    treat.ind <-  1
+    adj.p   <- 2.3
+    add     <- FALSE
+    col <-  "black"
     ## HouseKeeping 
     if(x$Gorder==1 | missing(fac.name)==TRUE){
         type <- "AME"
@@ -56,7 +65,7 @@ plot.CausalANOVA <- function(x, fac.name,
         if(missing(xlim)==FALSE){
             par(mar=c(4,space,2,2))
             plot(rev(CI.value), seq(from=1, to=length(CI.value)), pch=19, yaxt="n", xlim=xlim,
-                 ylim=c(0, length(CI.value)+1), ylab="", main="AME", xlab="AME", col=col)
+                 ylim=c(0, length(CI.value)+1), ylab="", main="AME", xlab="Estimated Effects", col=col)
             if(inference==TRUE){
                 segments(rev(CI.low), seq(from=1, to=length(CI.value)),
                          rev(CI.up), seq(from=1, to=length(CI.value)), lwd=2,col=col)
@@ -69,7 +78,7 @@ plot.CausalANOVA <- function(x, fac.name,
             par(mar=c(4,space,2,2))
             plot(rev(CI.value), seq(from=1, to=length(CI.value)), pch=19, yaxt="n",
                  xlim=c(xlim.min, xlim.max),
-                 ylim=c(0, length(CI.value)+1), ylab="", main="AME", xlab="AME", col=col)
+                 ylim=c(0, length(CI.value)+1), ylab="", main="AME", xlab="Estimated Effects", col=col)
             if(inference==TRUE){
                 segments(rev(CI.low), seq(from=1, to=length(CI.value)),
                          rev(CI.up), seq(from=1, to=length(CI.value)), lwd=2,col=col)
@@ -135,7 +144,7 @@ plot.CausalANOVA <- function(x, fac.name,
         if(missing(xlim)==FALSE){
             par(mar=c(4,space,2,2))
             plot(rev(CI.value), seq(from=1, to=length(CI.value)), pch=19, yaxt="n", xlim=xlim,
-                 ylim=c(0, length(CI.value)+1), ylab="", main="AMIE", xlab="AMIE",col=col)
+                 ylim=c(0, length(CI.value)+1), ylab="", main="AMIE", xlab="Estimated Effects",col=col)
             if(inference==TRUE){
                 segments(rev(CI.low), seq(from=1, to=length(CI.value)),
                          rev(CI.up), seq(from=1, to=length(CI.value)), lwd=2, col=col)
@@ -148,7 +157,7 @@ plot.CausalANOVA <- function(x, fac.name,
             par(mar=c(4,space,2,2))
             plot(rev(CI.value), seq(from=1, to=length(CI.value)), pch=19, yaxt="n",
                  xlim=c(xlim.min, xlim.max),
-                 ylim=c(0, length(CI.value)+1), ylab="", main="AMIE", xlab="AMIE",col=col)
+                 ylim=c(0, length(CI.value)+1), ylab="", main="AMIE", xlab="Estimated Effects",col=col)
             if(inference==TRUE){
                 segments(rev(CI.low), seq(from=1, to=length(CI.value)),
                          rev(CI.up), seq(from=1, to=length(CI.value)), lwd=2, col=col)
@@ -189,7 +198,8 @@ plot.CausalANOVA <- function(x, fac.name,
             if(missing(xlim)==FALSE){
                 par(mar=c(4,space,2,2))
                 plot(rev(CE.value), seq(from=1, to=length(CE.value)), pch=19, yaxt="n", xlim=xlim,
-                     ylim=c(0, length(CE.value)+1), ylab="", xlab="Conditional Effects", col=col)
+                     ylim=c(0, length(CE.value)+1), ylab="", xlab = "Estimated Effects", 
+                     col=col, main = "Conditional Effects")
                 segments(rev(CE.low), seq(from=1, to=length(CE.value)),
                          rev(CE.up), seq(from=1, to=length(CE.value)), lwd=2, col=col)
                 Axis(side=2, at=seq(from=1, to=length(CE.value)), labels=rep("",length(Name)))
@@ -200,7 +210,8 @@ plot.CausalANOVA <- function(x, fac.name,
                 par(mar=c(4,space,2,2))
                 plot(rev(CE.value), seq(from=1, to=length(CE.value)), pch=19, yaxt="n",
                      xlim=c(xlim.min, xlim.max),
-                     ylim=c(0, length(CE.value)+1), ylab="", xlab="Conditional Effects", col=col)
+                     ylim=c(0, length(CE.value)+1), ylab="", 
+                     xlab="Estimated Effects", main = "Conditional Effects", col=col)
                 segments(rev(CE.low), seq(from=1, to=length(CE.value)),
                          rev(CE.up), seq(from=1, to=length(CE.value)), lwd=2, col=col)
                 Axis(side=2, at=seq(from=1, to=length(CE.value)), labels=rep("",length(Name)))
@@ -226,18 +237,21 @@ plot.CausalANOVA <- function(x, fac.name,
                     par(mar=c(4,space,2,2))
                 }                    
                 plot(rev(CE.value), seq(from=1, to=length(CE.value)), pch=19, yaxt="n", xlim=xlim,
-                     ylim=c(0, length(CE.value)+1), ylab="", xlab="Conditional Effects", col=col)
+                     ylim=c(0, length(CE.value)+1), ylab="", xlab="Estimated Effects", 
+                     col=col, main = "Conditional Effects")
                 Axis(side=2, at=seq(from=1, to=length(CE.value)), labels=rep("",length(Name)))
                 Axis(side=2, at=seq(from=1, to=length(CE.value)), labels=rev(Name),
                      las=2, hadj=0, line=10, tck=0, lwd=0)
                 abline(v=0, lty=2)
             }else{
                 if(add==FALSE){
-                    par(mar=c(4,space,2,2))
+                    par(mar=c(4, space, 2,2))
                 } 
                 plot(rev(CE.value), seq(from=1, to=length(CE.value)), pch=19, yaxt="n",
                      xlim=c(xlim.min, xlim.max),
-                     ylim=c(0, length(CE.value)+1), ylab="", xlab="Conditional Effects", col=col)
+                     ylim=c(0, length(CE.value)+1), ylab="", 
+                     xlab="Estimated Effects", col=col,
+                     main = "Conditional Effects")
                 Axis(side=2, at=seq(from=1, to=length(CE.value)), labels=rep("",length(Name)))
                 Axis(side=2, at=seq(from=1, to=length(CE.value)), labels=rev(Name),
                      las=2, hadj=0, line=10, tck=0, lwd=0)

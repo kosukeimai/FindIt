@@ -1,8 +1,3 @@
-##################################################
-## Naoki Egami
-## 2016/08/22
-##################################################
-
 CreateWeights <- function(formula,Gorder=3,dif=TRUE,facCons=FALSE,data,side,type.ind,fac.level,ord.fac,
                           indTwo=NULL, indThree=NULL){
 

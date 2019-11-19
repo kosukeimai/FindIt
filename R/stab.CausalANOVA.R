@@ -1,8 +1,3 @@
-##############################
-## stab.GashANOVA.R
-## 2016/11/28
-## Naoki Egami
-############################## 
 stab.CausalANOVA <- function(object,cluster=NULL,boot=500,seed=1234){
 
     ## if(class(object)[1] != "CausalANOVA" & class(object)[1] != "CausalANOVAFit"){
@@ -147,4 +142,3 @@ stab.CausalANOVA <- function(object,cluster=NULL,boot=500,seed=1234){
                    "range.stab.v"=range.stab.v,
                    "AME.stab.v"=AME.stab.v,"AMIE.stab.v"=AMIE.stab.v)    
 }
-    

@@ -1,10 +1,33 @@
-
+#' FindIt: Finding Heterogeneous Treatment Effects
+#'
+#' \tabular{ll}{ Package: \tab factorEx\cr Type: \tab Package\cr Version: \tab 1.1.5\cr
+#' Date: \tab 2019-11-19\cr}
+#'
+#' @name FindIt-package
+#' @aliases FindIt-package CreateWeights CreatelevelIndex lengthSlack Lcombinefunction
+#' PsyConstraintCombine CreateWeights CreateANOVAconst Zcombinefunction Glsei
+#' CoefExtract rangeCausalANOVAFit CausalANOVAFit stab.CausalANOVA ScreenINT
+#' glinternet.cv indTwo2Three NoRegularization Collapsing FullVCOV
+#' cluster_se_glm makeallway maketwoway
+#' @docType package
+#' @author Naoki Egami, Marc Ratkovic and Kosuke Imai.
+#'
+#' Maintainer: Naoki Egami \email{naoki.egami5@gmail.com}
+#' @references Imai, Kosuke and Marc Ratkovic. 2013.  ``Estimating Treatment
+#' Effect Heterogeneity in Randomized Program Evaluation.'' Annals of Applied
+#' Statistics, Vol.7, No.1(March), pp. 443-470.
+#' \url{http://imai.fas.harvard.edu/research/files/svm.pdf}
+#' 
+#' Egami, Naoki and Kosuke Imai. 2019. Causal Interaction in Factorial Experiments: Application to Conjoint Analysis. Journal of the American Statistical Association, 
+#' Vol.114, No.526 (June), pp. 529–540. \url{http://imai.fas.harvard.edu/research/files/int.pdf}
+#' @keywords package
+NULL
 
 #' Data from conjoint analysis in Carlson (2015).
 #' 
 #' This data set gives the outcomes a well as treatment assignments of the
 #' conjoint analysis in Carlson (2015). Please Carlson (2015) and Egami and
-#' Imai (2016+) for more details.
+#' Imai (2019) for more details.
 #' 
 #' 
 #' @name Carlson
@@ -23,29 +46,6 @@
 #' @source Data from Carlson (2015).
 #' @keywords datasets
 NULL
-
-
-
-
-
-#' Internal FindIt functions
-#' 
-#' Internal FindIt functions
-#' 
-#' These are not intended for use by users.
-#' 
-#' @aliases CreateWeights CreatelevelIndex lengthSlack Lcombinefunction
-#' PsyConstraintCombine CreateWeights CreateANOVAconst Zcombinefunction Glsei
-#' CoefExtract rangeCausalANOVAFit CausalANOVAFit stab.CausalANOVA ScreenINT
-#' glinternet.cv indTwo2Three NoRegularization Collapsing FullVCOV
-#' cluster_se_glm makeallway maketwoway
-#' @author Naoki Egami
-#' @keywords internal
-NULL
-
-
-
-
 
 #' Data from the 1998 New Haven Get-Out-the-Vote Experiment
 #' 

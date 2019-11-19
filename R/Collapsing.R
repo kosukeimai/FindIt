@@ -1,8 +1,3 @@
-##################################################
-## Naoki Egami
-## 2016/08/22
-##################################################
-
 Collapsing <- function(fit){
     ## Make the difference in three-way interactions
     D3function <- function(alevel,blevel,clevel,type="A",ordABC=c(FALSE,FALSE,FALSE)){

@@ -19,9 +19,9 @@
 #' effects.} \item{...}{Arguments for the internal use.}
 #' @author Naoki Egami and Kosuke Imai.
 #' @seealso \link{CausalANOVA}.
-#' @references Egami, Naoki and Kosuke Imai. 2016+. ``Causal Interaction in
-#' Factorial Experiments: Application to Conjoint Analysis.'' Working paper.
-#' \url{http://imai.princeton.edu/research/files/int.pdf}
+#' @references Egami, Naoki and Kosuke Imai. 2019. Causal Interaction in
+#' Factorial Experiments: Application to Conjoint Analysis, Journal of the American Statistical Association.
+#' \url{http://imai.fas.harvard.edu/research/files/int.pdf}
 #' 
 #' Lim, M. and Hastie, T. 2015. Learning interactions via hierarchical
 #' group-lasso regularization. Journal of Computational and Graphical
@@ -51,6 +51,7 @@
 #' summary(fit2)
 #' plot(fit2, type="ConditionalEffect", fac.name=c("newRecordF","coeth_voting"))
 #' ConditionalEffect(fit2, treat.fac="newRecordF", cond.fac="coeth_voting")
+#' @export
 ConditionalEffect <- function(object,treat.fac=NULL, cond.fac=NULL,
                               base.ind=1, round=3,
                               inference=NULL, verbose=TRUE){
