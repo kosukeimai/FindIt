@@ -1,9 +1,9 @@
 Package: FindIt
-Version: 1.1.5
-Date: 2019-11-19
+Version: 1.2.0
+Date: 2019-11-20
 Title: Finding Heterogeneous Treatment Effects
-Author: Naoki Egami <naoki.egami5@gmail.com>, Marc Ratkovic <ratkovic@princeton.edu>, Kosuke Imai <imai@harvard.edu>
-Maintainer: Naoki Egami <naoki.egami5@gmail.com>
+Author: Naoki Egami, Marc Ratkovic, Kosuke Imai
+Maintainer: Naoki Egami <negami@princeton.edu>
 Depends: R (>= 3.1.0), arm
 Imports: glmnet, lars, Matrix, quadprog, glinternet, igraph,
          sandwich, lmtest, stats, graphics, utils, limSolve
