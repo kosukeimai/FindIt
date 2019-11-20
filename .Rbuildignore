@@ -2,6 +2,5 @@
 LICENSE
 README.md
 \.gitignore
-example
 ^.*\.Rproj$
 ^\.Rproj\.user$

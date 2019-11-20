@@ -12,7 +12,7 @@
 #' @docType package
 #' @author Naoki Egami, Marc Ratkovic and Kosuke Imai.
 #'
-#' Maintainer: Naoki Egami \email{naoki.egami5@gmail.com}
+#' Maintainer: Naoki Egami \email{negami@princeton.edu}
 #' @references Imai, Kosuke and Marc Ratkovic. 2013.  ``Estimating Treatment
 #' Effect Heterogeneity in Randomized Program Evaluation.'' Annals of Applied
 #' Statistics, Vol.7, No.1(March), pp. 443-470.
