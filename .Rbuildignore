@@ -2,7 +2,6 @@
 LICENSE
 README.md
 \.gitignore
-example
 ^.*\.Rproj$
 ^\.Rproj\.user$
 local_example

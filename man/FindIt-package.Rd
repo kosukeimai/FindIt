@@ -41,6 +41,6 @@ Vol.114, No.526 (June), pp. 529–540. \url{http://imai.fas.harvard.edu/research
 \author{
 Naoki Egami, Marc Ratkovic and Kosuke Imai.
 
-Maintainer: Naoki Egami \email{naoki.egami5@gmail.com}
+Maintainer: Naoki Egami \email{negami@princeton.edu}
 }
 \keyword{package}
