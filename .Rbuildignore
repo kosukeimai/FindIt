@@ -5,3 +5,4 @@ README.md
 example
 ^.*\.Rproj$
 ^\.Rproj\.user$
+local_example

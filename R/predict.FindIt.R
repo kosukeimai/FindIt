@@ -400,21 +400,37 @@ predict.FindIt <- function (object, newdata, sort = TRUE, decreasing = TRUE, wts
                 preds.control <- sign(preds.control) * pmin(abs(preds.control), 
                   1)
                 preds.diff <- (preds.treat - preds.control)/2
+                
+                Y_t <- (preds.treat/2 + 0.5)
+                Y_c <- (preds.control/2 + 0.5)
             }
             if (main == FALSE) {                                
-                preds.treat <- X.t %*% coefs[-1]
-                preds.treat <- sign(preds.treat) * pmin(abs(preds.treat), 
-                  1)
-                preds.diff <- preds.treat/2
+                preds.treat <- cbind(1, X.t) %*% coefs
+                preds.treat <- sign(preds.treat) * pmin(abs(preds.treat), 1)
+                # preds.diff <- preds.treat/2
+                
+                preds.control <- rep(1, nrow(X.t)) %*% coefs[1]
+                preds.control <- sign(preds.control) *pmin(abs(preds.control), 1)
+                
+                preds.diff <- (preds.treat - preds.control)/2
+                
+                Y_t <- (preds.treat/2 + 0.5)
+                Y_c <- (preds.control/2 + 0.5)
             }
             ATE <- mean(preds.diff)
         }
         if (type == "continuous") {
             if (main) {
                 preds.diff <- X.t %*% coefs[-c(1:(dim(X.c)[2]))]
+                
+                Y_t <- cbind(X.c, X.t) %*% coefs
+                Y_c <- X.c %*% coefs[c(1:ncol(X.c))]
             }
             if (main == FALSE) {
                 preds.diff <- X.t %*% coefs[-1]
+                
+                Y_t <- cbind(1, X.t) %*% coefs
+                Y_c <- rep(1, nrow(X.t)) %*% coefs[1]
             }
             ATE <- mean(preds.diff)
         }
@@ -452,8 +468,13 @@ predict.FindIt <- function (object, newdata, sort = TRUE, decreasing = TRUE, wts
         }
     }
     pred.data.out <- as.data.frame(pred.data.out)
+    if (treat.type == "multiple"){
+      internal <- list("Y_t" = Y_t, "Y_c" = Y_c)
+    }else{
+      internal<- NULL
+    }
     out <- list(treat.type = treat.type, ATE = ATE, data = pred.data.out, 
-        coefs = coefs, orig.coef = coefs2)
+        coefs = coefs, orig.coef = coefs2, internal = internal)
     class(out) <- "PredictFindIt"
     invisible(out)
 }

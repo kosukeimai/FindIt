@@ -35,3 +35,4 @@ vignettes/*.pdf
 .Rproj.user
 
 example
+local_example
