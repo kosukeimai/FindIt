@@ -1,7 +1,8 @@
 cluster_se_glm <- function(model, cluster){
     
     #  Drop unused cluster indicators, if cluster var is a factor
-    if (class(cluster) == "factor") {
+    # if (class(cluster) == "factor") {
+    if (is.factor(cluster) == TRUE) {
         cluster <- droplevels(cluster)
     }
     

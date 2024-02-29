@@ -4,7 +4,8 @@
 \name{LaLonde}
 \alias{LaLonde}
 \title{National Supported Work Study Experimental Data}
-\format{A data frame consisting of 12 columns (including a treatment
+\format{
+A data frame consisting of 12 columns (including a treatment
 assignment vector) and 2787 observations.
 
 \tabular{llll}{ outcome \tab integer \tab whether earnings in 1978 are
@@ -17,7 +18,8 @@ factor \tab married or not \tab 0,1 \cr nodegr \tab factor \tab an indicator
 for no high school degree \tab 0,1 \cr log.re75 \tab numeric \tab log of
 earnings in 1975 \tab \cr u75 \tab factor \tab unemployed in 1975 \tab 0,1
 \cr wts.extrap \tab numeric \tab extrapolation weights to the 1978 Panel
-Study for Income Dynamics dataset \tab }}
+Study for Income Dynamics dataset \tab }
+}
 \source{
 Data from the National Supported Work Study.  A benchmark matching
 dataset. 1975 earnings are pre-treatment.

@@ -4,7 +4,8 @@
 \name{GerberGreen}
 \alias{GerberGreen}
 \title{Data from the 1998 New Haven Get-Out-the-Vote Experiment}
-\format{A data frame consisting of 9 columns and 29,380 observations.
+\format{
+A data frame consisting of 9 columns and 29,380 observations.
 
 \tabular{llll}{ voted98 \tab integer \tab voted in 1998 \tab 0,1 \cr
 persngrp \tab factor \tab personal contact attempted \tab 0,1 \cr phnscrpt
@@ -22,7 +23,8 @@ phnscrpt: Script read to phone respondents \tabular{ll}{ 0 \tab No phone \cr
 \tab Neighbor \cr 5 \tab Neighbor or Civic-Neighbor \cr 6 \tab Close }
 
 appeal: Content of message \tabular{ll}{ 1 \tab Civic Duty \cr 2 \tab
-Neighborhood Solidarity \cr 3 \tab Close Election }}
+Neighborhood Solidarity \cr 3 \tab Close Election }
+}
 \description{
 This data set contains the most recent corrected data from the field
 experiment analyzed in Gerber and Green (2000).

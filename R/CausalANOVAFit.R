@@ -321,7 +321,8 @@ CausalANOVAFit <- function(formula, internal.int,
                    "inference"=FALSE,
                    "collapse"=collapse,
                    "collapse.type"=collapse.type,
-                   "collapse.cost"=collapse.cost)
+                   "collapse.cost"=collapse.cost,
+                   "maxIter" = maxIter)
     
     class(output) <- c("CausalANOVAFit","list")
     return(output)

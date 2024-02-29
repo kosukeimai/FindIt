@@ -9,10 +9,9 @@
 #' CoefExtract rangeCausalANOVAFit CausalANOVAFit stab.CausalANOVA ScreenINT
 #' glinternet.cv indTwo2Three NoRegularization Collapsing FullVCOV
 #' cluster_se_glm makeallway maketwoway
-#' @docType package
 #' @author Naoki Egami, Marc Ratkovic and Kosuke Imai.
 #'
-#' Maintainer: Naoki Egami \email{negami@princeton.edu}
+#' Maintainer: Naoki Egami \email{naoki.egami5@gmail.com}
 #' @references Imai, Kosuke and Marc Ratkovic. 2013.  ``Estimating Treatment
 #' Effect Heterogeneity in Randomized Program Evaluation.'' Annals of Applied
 #' Statistics, Vol.7, No.1(March), pp. 443-470.

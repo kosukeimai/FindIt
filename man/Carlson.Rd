@@ -4,7 +4,8 @@
 \name{Carlson}
 \alias{Carlson}
 \title{Data from conjoint analysis in Carlson (2015).}
-\format{A data frame consisting of 7 columns (including a treatment
+\format{
+A data frame consisting of 7 columns (including a treatment
 assignment vector) and 3232 observations.
 
 \tabular{llll}{ outcome \tab integer \tab whether a profile is chosen \tab
@@ -12,7 +13,8 @@ assignment vector) and 3232 observations.
 promise \tab factor \tab platform \tab 3 levels (job, clinic, education) \cr
 coeth_voting \tab factor \tab whether a profile is coethnic to a respodent
 \tab Yes, No \cr Degree \tab factor \tab job whether a profile has relevant
-degrees \tab 4 Yes, No \cr }}
+degrees \tab 4 Yes, No \cr }
+}
 \source{
 Data from Carlson (2015).
 }
