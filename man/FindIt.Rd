@@ -218,11 +218,9 @@ plot(pred2)
 Imai, Kosuke and Marc Ratkovic. 2013.  ``Estimating Treatment
 Effect Heterogeneity in Randomized Program Evaluation.'' Annals of Applied
 Statistics, Vol.7, No.1(March), pp. 443-470.
-\url{http://imai.fas.harvard.edu/research/files/svm.pdf}
 
 Egami, Naoki and Kosuke Imai. 2019. Causal Interaction in 
 Factorial Experiments: Application to Conjoint Analysis, Journal of the American Statistical Association.
-\url{http://imai.fas.harvard.edu/research/files/int.pdf}
 }
 \author{
 Naoki Egami, Marc Ratkovic and Kosuke Imai.

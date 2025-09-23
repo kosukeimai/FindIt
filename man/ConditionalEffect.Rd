@@ -69,7 +69,6 @@ ConditionalEffect(fit2, treat.fac="newRecordF", cond.fac="coeth_voting")
 \references{
 Egami, Naoki and Kosuke Imai. 2019. Causal Interaction in
 Factorial Experiments: Application to Conjoint Analysis, Journal of the American Statistical Association.
-\url{http://imai.fas.harvard.edu/research/files/int.pdf}
 
 Lim, M. and Hastie, T. 2015. Learning interactions via hierarchical
 group-lasso regularization. Journal of Computational and Graphical

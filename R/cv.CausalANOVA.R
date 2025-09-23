@@ -86,7 +86,6 @@
 #' 
 #' Egami, Naoki and Kosuke Imai. 2019. Causal Interaction in
 #' Factorial Experiments: Application to Conjoint Analysis, Journal of the American Statistical Association.
-#' \url{http://imai.fas.harvard.edu/research/files/int.pdf}
 #' @examples
 #' 
 #' data(Carlson)

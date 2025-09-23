@@ -162,7 +162,6 @@ structural identification in the interaction anova model.'' Biometrics 69,
 
 Egami, Naoki and Kosuke Imai. 2019. Causal Interaction in
 Factorial Experiments: Application to Conjoint Analysis, Journal of the American Statistical Association.
-\url{http://imai.fas.harvard.edu/research/files/int.pdf}
 }
 \seealso{
 \link{CausalANOVA}.
